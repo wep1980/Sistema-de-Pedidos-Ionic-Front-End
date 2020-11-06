@@ -1,34 +1,37 @@
+/**
+ * TODAS AS CLASSES QUE SÃO UTILIZADAS NO CORPO DO SCRIPT PRECISAM ESTAR IMPORTADAS AQUI EMBAIXO
+ */
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+/**
+ * Decorator -> é uma anotação que contém configurações para alterar a classe
+ */
 @NgModule({
-  declarations: [
-    MyApp,
-    HomePage,
-    ListPage
+  declarations: [ // Aqui ficam a lista de componentes ou paginas que fazem parte deste modulo
+    MyApp
   ],
-  imports: [
+  imports: [ // Lista de modulos que são importados por este modulo
     BrowserModule,
     IonicModule.forRoot(MyApp),
   ],
-  bootstrap: [IonicApp],
-  entryComponents: [
-    MyApp,
-    HomePage,
-    ListPage
+  bootstrap: [IonicApp], // Bootstrap -> tem a indicação de como a aplicação vai iniciar
+  entryComponents: [  // Quando o declaration for uma pagina e não um componente, essa pagina precisa ser declarada aqui também
+    MyApp
   ],
-  providers: [
+  providers: [ // Aqui se declara as classes que os objetos injetaveis sejam uma instancia unica para este modulo
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
-export class AppModule {}
+/**
+ * Export -> permite que uma classe ou elemento import o AppModule( torna-se visivel em outros lugares )
+ */
+export class AppModule {} 

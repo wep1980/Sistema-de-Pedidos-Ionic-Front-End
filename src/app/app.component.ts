@@ -3,26 +3,27 @@ import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
 
+
+/**
+ * Pagina controladora da pagina app.html ( TODAS AS PAGINAS HTML TEM UM CONTROLADOR )
+ */
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = HomePage;
+  rootPage: String = 'HomePage'; // Configuração da página inicial do aplicativo
 
-  pages: Array<{title: string, component: any}>;
+  pages: Array<{title: string, component: String }>;
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Home', component: HomePage },
-      { title: 'List', component: ListPage }
+      { title: 'Home', component: 'HomePage' }
     ];
 
   }
