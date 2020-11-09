@@ -25695,3 +25695,17 @@ ion-navbar.toolbar {
   padding-bottom: 4px;
   min-height: 46px;
 }
+
+h3 {
+  text-align: center;
+}
+
+img {
+  width: 200px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  margin: auto;
+  display: block;
+  padding: 10px;
+}
