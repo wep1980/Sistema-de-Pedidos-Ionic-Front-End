@@ -63,9 +63,22 @@ var HomePage = /** @class */ (function () {
      *
      * navCtrl: NavController -> injeção do objeto que controla a navegação entre as paginas
      */
-    function HomePage(navCtrl) {
+    function HomePage(navCtrl, menu) {
         this.navCtrl = navCtrl;
+        this.menu = menu;
     }
+    /**
+     * Método que desabilita o menu ao entrar na pagina de login
+     */
+    HomePage.prototype.ionViewWillEnter = function () {
+        this.menu.swipeEnable(false);
+    };
+    /**
+     * Método que habilita o menu ao sair da pagina de login
+     */
+    HomePage.prototype.ionViewDidLeave = function () {
+        this.menu.swipeEnable(true);
+    };
     /**
      * Metodo que faz a navegação da pagina homePage para CategoriasPage
      *
@@ -80,10 +93,10 @@ var HomePage = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-home',template:/*ion-inline-start:"C:\workspace ionic\ionic-spring-frontend\src\pages\home\home.html"*/'<ion-content padding>\n\n  <h3>Sistema de pedidos</h3>\n\n  <img src="assets/imgs/logo2.png" alt="logo">\n\n  <form action="">\n    <ion-item>\n      <ion-label stacked>Email</ion-label>\n      <ion-input type="text"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label stacked>Senha</ion-label>\n      <ion-input type="password"></ion-input>\n    </ion-item>\n    <button ion-button block (click)="login()">Entrar</button> <!-- (click)="login()" -> Método login associado ao click do botão -->\n  </form>\n  <button ion-button block outline>Registrar</button>\n\n\n</ion-content>'/*ion-inline-end:"C:\workspace ionic\ionic-spring-frontend\src\pages\home\home.html"*/
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */]) === "function" && _a || Object])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* MenuController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* MenuController */]) === "function" && _b || Object])
     ], HomePage);
     return HomePage;
-    var _a;
+    var _a, _b;
 }());
 
 //# sourceMappingURL=home.js.map

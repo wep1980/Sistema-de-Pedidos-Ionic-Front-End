@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import { IonicPage, MenuController, NavController } from 'ionic-angular';
 
 /**
  * Pagina controladora da home.html
@@ -17,8 +17,22 @@ export class HomePage {
    * 
    * navCtrl: NavController -> injeção do objeto que controla a navegação entre as paginas
    */
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController, public menu: MenuController) {
 
+  }
+
+  /**
+   * Método que desabilita o menu ao entrar na pagina de login
+   */
+  ionViewWillEnter() {
+    this.menu.swipeEnable(false);
+  }
+
+  /**
+   * Método que habilita o menu ao sair da pagina de login
+   */
+  ionViewDidLeave() {
+    this.menu.swipeEnable(true);
   }
 
   /**
@@ -28,8 +42,10 @@ export class HomePage {
    * push() -> Método que chama outra pagina -- Empilha uma pagina em cima da outra
    */
   login() {
-   // this.navCtrl.push('CategoriasPage'); // Navegação com empilhamento
-   this.navCtrl.setRoot('CategoriasPage'); // Navegação sem empilhamento
+    // this.navCtrl.push('CategoriasPage'); // Navegação com empilhamento
+    this.navCtrl.setRoot('CategoriasPage'); // Navegação sem empilhamento
   }
+
+  /** Executando ação ao entrar e sair da pagina */
 
 }
