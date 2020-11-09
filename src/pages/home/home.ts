@@ -12,8 +12,24 @@ import { IonicPage, NavController } from 'ionic-angular';
 })
 export class HomePage {
 
+  /**Para declarar injeção de dependencia em uma classe 
+   * basta declarar o objeto como parametro no construtor
+   * 
+   * navCtrl: NavController -> injeção do objeto que controla a navegação entre as paginas
+   */
   constructor(public navCtrl: NavController) {
 
+  }
+
+  /**
+   * Metodo que faz a navegação da pagina homePage para CategoriasPage
+   *  
+   * this.navCtrl -> Para acessar qualquer elemento de uma classe e necessario chamar o this. antes
+   * push() -> Método que chama outra pagina -- Empilha uma pagina em cima da outra
+   */
+  login() {
+   // this.navCtrl.push('CategoriasPage'); // Navegação com empilhamento
+   this.navCtrl.setRoot('CategoriasPage'); // Navegação sem empilhamento
   }
 
 }
