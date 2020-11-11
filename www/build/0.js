@@ -1,14 +1,14 @@
 webpackJsonp([0],{
 
-/***/ 276:
+/***/ 675:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HomeModule", function() { return HomeModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_ionic_angular_module__ = __webpack_require__(199);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__home__ = __webpack_require__(278);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_ionic_angular_module__ = __webpack_require__(344);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__home__ = __webpack_require__(677);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -34,13 +34,13 @@ var HomeModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 278:
+/***/ 677:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HomePage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(98);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(149);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -66,6 +66,11 @@ var HomePage = /** @class */ (function () {
     function HomePage(navCtrl, menu) {
         this.navCtrl = navCtrl;
         this.menu = menu;
+        /**Sera feito o binding desse objeto, ou seja sera capturado os dados da tela de login */
+        this.creds = {
+            email: "",
+            senha: ""
+        };
     }
     /**
      * Método que desabilita o menu ao entrar na pagina de login
@@ -86,12 +91,13 @@ var HomePage = /** @class */ (function () {
      * push() -> Método que chama outra pagina -- Empilha uma pagina em cima da outra
      */
     HomePage.prototype.login = function () {
+        console.log(this.creds);
         // this.navCtrl.push('CategoriasPage'); // Navegação com empilhamento
         this.navCtrl.setRoot('CategoriasPage'); // Navegação sem empilhamento
     };
     HomePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-home',template:/*ion-inline-start:"C:\workspace ionic\ionic-spring-frontend\src\pages\home\home.html"*/'<ion-content padding>\n\n  <h3>Sistema de pedidos</h3>\n\n  <img src="assets/imgs/logo2.png" alt="logo">\n\n  <form action="">\n    <ion-item>\n      <ion-label stacked>Email</ion-label>\n      <ion-input type="text"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label stacked>Senha</ion-label>\n      <ion-input type="password"></ion-input>\n    </ion-item>\n    <button ion-button block (click)="login()">Entrar</button> <!-- (click)="login()" -> Método login associado ao click do botão -->\n  </form>\n  <button ion-button block outline>Registrar</button>\n\n\n</ion-content>'/*ion-inline-end:"C:\workspace ionic\ionic-spring-frontend\src\pages\home\home.html"*/
+            selector: 'page-home',template:/*ion-inline-start:"C:\workspace ionic\ionic-spring-frontend\src\pages\home\home.html"*/'<ion-content padding>\n\n  <h3>Sistema de pedidos</h3>\n\n  <img src="assets/imgs/logo2.png" alt="logo">\n\n  <form action="">\n    <ion-item>\n      <ion-label stacked>Email</ion-label>\n      <!-- Binding de atributo de elemento HTML [] com o de evento () -->\n      <ion-input [(ngModel)]="creds.email" name="email" type="text"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label stacked>Senha</ion-label>\n      <ion-input [(ngModel)]="creds.senha" name="senha" type="password"></ion-input>\n    </ion-item>\n    <button ion-button block (click)="login()">Entrar</button> <!-- (click)="login()" -> Método login associado ao click do botão -->\n  </form>\n  <button ion-button block outline>Registrar</button>\n\n\n</ion-content>'/*ion-inline-end:"C:\workspace ionic\ionic-spring-frontend\src\pages\home\home.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* MenuController */]])
     ], HomePage);

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, MenuController, NavController } from 'ionic-angular';
+import { CredenciaisDTO } from '../../models/credencias.dto';
 
 /**
  * Pagina controladora da home.html
@@ -11,6 +12,12 @@ import { IonicPage, MenuController, NavController } from 'ionic-angular';
   templateUrl: 'home.html'
 })
 export class HomePage {
+
+  /**Sera feito o binding desse objeto, ou seja sera capturado os dados da tela de login */
+  creds : CredenciaisDTO = {
+    email: "",
+    senha: ""
+  };
 
   /**Para declarar injeção de dependencia em uma classe 
    * basta declarar o objeto como parametro no construtor
@@ -42,6 +49,7 @@ export class HomePage {
    * push() -> Método que chama outra pagina -- Empilha uma pagina em cima da outra
    */
   login() {
+    console.log(this.creds);
     // this.navCtrl.push('CategoriasPage'); // Navegação com empilhamento
     this.navCtrl.setRoot('CategoriasPage'); // Navegação sem empilhamento
   }

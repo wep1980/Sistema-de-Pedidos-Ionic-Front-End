@@ -7,12 +7,13 @@
   <form action="">
     <ion-item>
       <ion-label stacked>Email</ion-label>
-      <ion-input type="text"></ion-input>
+      <!-- Binding de atributo de elemento HTML [] com o de evento () -->
+      <ion-input [(ngModel)]="creds.email" name="email" type="text"></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label stacked>Senha</ion-label>
-      <ion-input type="password"></ion-input>
+      <ion-input [(ngModel)]="creds.senha" name="senha" type="password"></ion-input>
     </ion-item>
     <button ion-button block (click)="login()">Entrar</button> <!-- (click)="login()" -> Método login associado ao click do botão -->
   </form>
