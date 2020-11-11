@@ -6,13 +6,6 @@ import { CategoriaDTO } from '../../models/categoria.dto';
 import { CategoriaService } from '../../services/domain/categoria.service';
 
 
-/**
- * Generated class for the CategoriasPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
 @IonicPage()
 @Component({
   selector: 'page-categorias',
@@ -20,8 +13,8 @@ import { CategoriaService } from '../../services/domain/categoria.service';
 })
 export class CategoriasPage {
 
-  bucketUrl: string = API_CONFIG.bucketBaseUrl;
-  items: CategoriaDTO[];
+  bucketUrl: string = API_CONFIG.bucketBaseUrl; // Variavel que recebe bucketBaseUrl criado no API_CONFIG
+  items: CategoriaDTO[]; // Variavel -> do Tipo lista CategoriaDTO, sera usada pelo HTML para ler os dados
 
   constructor(
     public navCtrl: NavController, 
@@ -48,12 +41,14 @@ export class CategoriasPage {
   ionViewDidLoad() {
 
     this.categoriaService.findAll().subscribe(response => {
-      this.items = response;
+      this.items = response; // A variavel items recebe a resposta
       //console.log(response);
     },
-    error => {
-      console.log(error);
-    });
+    /**
+     * A responsabilidade de mostrar o erro no console esta sendo do inteceptor.
+     * É necessario ter error => {}); para que o erro não ocorra aqui, ja que o interceptor propaga o erro
+     */
+    error => {}); // Se for necessario fazer algo a mais do que imprimir na tela, sera feito aqui
   }
 
 }

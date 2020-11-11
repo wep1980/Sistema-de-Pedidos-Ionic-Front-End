@@ -1,6 +1,6 @@
 webpackJsonp([1],{
 
-/***/ 276:
+/***/ 275:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8,7 +8,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CategoriasPageModule", function() { return CategoriasPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(98);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__categorias__ = __webpack_require__(278);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__categorias__ = __webpack_require__(277);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -38,14 +38,14 @@ var CategoriasPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 278:
+/***/ 277:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CategoriasPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(98);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__config_api_config__ = __webpack_require__(261);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__config_api_config__ = __webpack_require__(197);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_domain_categoria_service__ = __webpack_require__(198);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -60,18 +60,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-/**
- * Generated class for the CategoriasPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 var CategoriasPage = /** @class */ (function () {
     function CategoriasPage(navCtrl, navParams, categoriaService) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.categoriaService = categoriaService;
-        this.bucketUrl = __WEBPACK_IMPORTED_MODULE_2__config_api_config__["a" /* API_CONFIG */].bucketBaseUrl;
+        this.bucketUrl = __WEBPACK_IMPORTED_MODULE_2__config_api_config__["a" /* API_CONFIG */].bucketBaseUrl; // Variavel que recebe bucketBaseUrl criado no API_CONFIG
     }
     /**
      * A Chamada do metodo por padrão é assincrona, é preciso se inscrever para fazer algo quando a resposta chegar.
@@ -92,15 +86,18 @@ var CategoriasPage = /** @class */ (function () {
     CategoriasPage.prototype.ionViewDidLoad = function () {
         var _this = this;
         this.categoriaService.findAll().subscribe(function (response) {
-            _this.items = response;
+            _this.items = response; // A variavel items recebe a resposta
             //console.log(response);
-        }, function (error) {
-            console.log(error);
-        });
+        }, 
+        /**
+         * A responsabilidade de mostrar o erro no console esta sendo do inteceptor.
+         * É necessario ter error => {}); para que o erro não ocorra aqui, ja que o interceptor propaga o erro
+         */
+        function (error) { }); // Se for necessario fazer algo a mais do que imprimir na tela, sera feito aqui
     };
     CategoriasPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-categorias',template:/*ion-inline-start:"C:\workspace ionic\ionic-spring-frontend\src\pages\categorias\categorias.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle> <!--Colocando botão iniciar na pagina inicial -->\n       <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Categorias</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n\n  <ion-list>\n\n    <button ion-item *ngFor="let item of items">\n      <ion-thumbnail item-start>\n        <img src="{{bucketUrl}}/cat{{item.id}}.jpg" alt="">\n      </ion-thumbnail>  \n        <h2>{{ item.nome }}</h2>\n    </button>\n\n  </ion-list>\n\n</ion-content>\n'/*ion-inline-end:"C:\workspace ionic\ionic-spring-frontend\src\pages\categorias\categorias.html"*/,
+            selector: 'page-categorias',template:/*ion-inline-start:"C:\workspace ionic\ionic-spring-frontend\src\pages\categorias\categorias.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle> <!--Colocando botão iniciar na pagina inicial -->\n       <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Categorias</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n\n  <ion-list>\n<!-- button ion-item -> Todo item fica clicavel -- Diretiva do Angular *ngFor = lê uma coleção e repetir o numero de vezes da coleção \n     *ngFor="let item of items" = Percorre a lista de items( VARIAVEL CRIADA NO CONTROLADOR ) e cada elemento recebe o apelido de item-->\n    <button ion-item *ngFor="let item of items">\n      <ion-thumbnail item-start>\n        <img src="{{bucketUrl}}/cat{{item.id}}.jpg" alt=""> <!-- {{}} INTERPOLAÇÃO bucketUrl(variavel criada no controlador) com concatenação /cat que referencia o nome das imagens de categoria e busca o id de cada uma das imagens -->\n      </ion-thumbnail>  \n        <h2>{{ item.nome }}</h2> <!-- {{}} INTERPOLAÇÃO = Interpola o conteudo do HTML com o DADO que veio do controlador  -->\n    </button>\n\n  </ion-list>\n\n</ion-content>\n'/*ion-inline-end:"C:\workspace ionic\ionic-spring-frontend\src\pages\categorias\categorias.html"*/,
         }),
         __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__services_domain_categoria_service__["a" /* CategoriaService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__services_domain_categoria_service__["a" /* CategoriaService */]) === "function" && _c || Object])
     ], CategoriasPage);

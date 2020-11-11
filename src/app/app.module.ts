@@ -11,6 +11,7 @@ import { MyApp } from './app.component';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { CategoriaService } from '../services/domain/categoria.service';
+import { ErrorInterceptorProvider } from './interceptors/error-interceptor';
 
 /**
  * Decorator -> é uma anotação que contém configurações para alterar a classe
@@ -37,7 +38,8 @@ import { CategoriaService } from '../services/domain/categoria.service';
      * pois e um serviço que vai ser muito utilizado.
      * Unica instancia servindo toda aplicação
      */
-    CategoriaService
+    CategoriaService,
+    ErrorInterceptorProvider
   ]
 })
 /**

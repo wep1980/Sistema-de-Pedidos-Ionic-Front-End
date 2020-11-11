@@ -10,12 +10,13 @@
 <ion-content padding>
 
   <ion-list>
-
+<!-- button ion-item -> Todo item fica clicavel -- Diretiva do Angular *ngFor = lê uma coleção e repetir o numero de vezes da coleção 
+     *ngFor="let item of items" = Percorre a lista de items( VARIAVEL CRIADA NO CONTROLADOR ) e cada elemento recebe o apelido de item-->
     <button ion-item *ngFor="let item of items">
       <ion-thumbnail item-start>
-        <img src="{{bucketUrl}}/cat{{item.id}}.jpg" alt="">
+        <img src="{{bucketUrl}}/cat{{item.id}}.jpg" alt=""> <!-- {{}} INTERPOLAÇÃO bucketUrl(variavel criada no controlador) com concatenação /cat que referencia o nome das imagens de categoria e busca o id de cada uma das imagens -->
       </ion-thumbnail>  
-        <h2>{{ item.nome }}</h2>
+        <h2>{{ item.nome }}</h2> <!-- {{}} INTERPOLAÇÃO = Interpola o conteudo do HTML com o DADO que veio do controlador  -->
     </button>
 
   </ion-list>
