@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, MenuController, NavController } from 'ionic-angular';
 import { CredenciaisDTO } from '../../models/credencias.dto';
-import { AuthService } from '../../services/domain/auth.service';
+import { AuthService } from '../../services/auth.service';
+
 
 /**
  * Pagina controladora da home.html

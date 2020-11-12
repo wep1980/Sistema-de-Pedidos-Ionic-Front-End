@@ -1,18 +1,24 @@
+
 /* Serviço de Autorização -- Esse serviço precisa ser chamado na home.ts */
 
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { API_CONFIG } from "../../config/api.config";
-import { CredenciaisDTO } from "../../models/credencias.dto";
-import { LocalUser } from "../../models/local_user";
+import { JwtHelper } from "angular2-jwt";
+import { API_CONFIG } from "../config/api.config";
+import { CredenciaisDTO } from "../models/credencias.dto";
+import { LocalUser } from "../models/local_user";
 import { StorageService } from "./storage.service";
 
 
 @Injectable()
 export class AuthService {
 
+    // Instalado atraves do npm install --save angular2-jwt
+    jwtHelper: JwtHelper = new JwtHelper();
+
     // O HttpClient faz a comunicação com o ENDPOINT login
-    constructor(public http: HttpClient,
+    constructor(
+        public http: HttpClient,
         public storage: StorageService) {
 
     }
@@ -44,7 +50,8 @@ export class AuthService {
         // Retira a palavra Bearer com espaço e pega somente o token
         let tok = authorizationValue.substring(7);
         let user: LocalUser = {
-            token: tok
+            token: tok,
+            email: this.jwtHelper.decodeToken(tok).sub // pegando o email do token
         };
         this.storage.setLocalUser(user);
     }
