@@ -56,7 +56,8 @@ export class HomePage {
    */
   login() {
     this.auth.authenticate(this.creds).subscribe(response => {
-      console.log(response.headers.get('Authorization')); // Confirma se o cabeçalho veio na resposta
+      this.auth.successfulLogin(response.headers.get('Authorization'));
+      //console.log(response.headers.get('Authorization')); // Confirma se o cabeçalho veio na resposta
       this.navCtrl.setRoot('CategoriasPage'); // Navegação sem empilhamento
       // this.navCtrl.push('CategoriasPage'); // Navegação com empilhamento
     },

@@ -98,7 +98,8 @@ var HomePage = /** @class */ (function () {
     HomePage.prototype.login = function () {
         var _this = this;
         this.auth.authenticate(this.creds).subscribe(function (response) {
-            console.log(response.headers.get('Authorization')); // Confirma se o cabeçalho veio na resposta
+            _this.auth.successfulLogin(response.headers.get('Authorization'));
+            //console.log(response.headers.get('Authorization')); // Confirma se o cabeçalho veio na resposta
             _this.navCtrl.setRoot('CategoriasPage'); // Navegação sem empilhamento
             // this.navCtrl.push('CategoriasPage'); // Navegação com empilhamento
         }, function (error) { });
