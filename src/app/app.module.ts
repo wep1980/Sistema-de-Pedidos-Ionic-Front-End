@@ -12,6 +12,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { CategoriaService } from '../services/domain/categoria.service';
 import { ErrorInterceptorProvider } from './interceptors/error-interceptor';
+import { AuthService } from '../services/domain/auth.service';
 
 /**
  * Decorator -> é uma anotação que contém configurações para alterar a classe
@@ -39,7 +40,8 @@ import { ErrorInterceptorProvider } from './interceptors/error-interceptor';
      * Unica instancia servindo toda aplicação
      */
     CategoriaService,
-    ErrorInterceptorProvider
+    ErrorInterceptorProvider,
+    AuthService
   ]
 })
 /**
