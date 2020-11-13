@@ -21,14 +21,14 @@ export class ClienteService {
      */
     findByEmail(email: string): Observable<ClienteDTO> {
 
-        let token = this.storage.getLocalUser().token; // let token -> variavel temporaria
+       // let token = this.storage.getLocalUser().token; // let token -> variavel temporaria
 
         // Cabeçalho que sera enviado
-        let authHeader = new HttpHeaders({'Authorization': 'Bearer ' + token});
+       // let authHeader = new HttpHeaders({'Authorization': 'Bearer ' + token});
 
         return this.http.get<ClienteDTO>(
-            `${API_CONFIG.baseUrl}/clientes/email?value=${email}`, 
-            {'headers': authHeader}); //passa o cabeçalho para a requisição
+            `${API_CONFIG.baseUrl}/clientes/email?value=${email}`);
+           // {'headers': authHeader}); //passa o cabeçalho para a requisição
     }
 
 

@@ -15,6 +15,7 @@ import { ErrorInterceptorProvider } from './interceptors/error-interceptor';
 import { AuthService } from '../services/auth.service';
 import { StorageService } from '../services/storage.service';
 import { ClienteService } from '../services/domain/cliente.service';
+import { AuthInterceptorProvider } from './interceptors/auth-interceptor';
 
 /**
  * Decorator -> é uma anotação que contém configurações para alterar a classe
@@ -42,6 +43,12 @@ import { ClienteService } from '../services/domain/cliente.service';
      * Unica instancia servindo toda aplicação
      */
     CategoriaService,
+    /**
+     * Colocar o cabeçalho na requisição( AuthInterceptorProvider ) tem que ser feito antes do tratamento de erro.
+     * Para controlar a ordem em que os interceptors serão executados é so colocar um antes do outro 
+     * aqui no providers.
+     */
+    AuthInterceptorProvider, 
     ErrorInterceptorProvider,
     AuthService,
     StorageService,
