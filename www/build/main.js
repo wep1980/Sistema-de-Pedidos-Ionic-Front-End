@@ -515,6 +515,7 @@ var MyApp = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common_http__ = __webpack_require__(42);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__ = __webpack_require__(248);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_storage_service__ = __webpack_require__(63);
 // Classe de tratamento de erros global. Existe a possibilidade de tratamento pelo Controller
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -522,16 +523,22 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 
 
  // IMPORTANTE: IMPORT ATUALIZADO
+
 var ErrorInterceptor = /** @class */ (function () {
-    function ErrorInterceptor() {
+    function ErrorInterceptor(storage) {
+        this.storage = storage;
     }
     /**
      * Método que intercepta as requisições
      */
     ErrorInterceptor.prototype.intercept = function (req, next) {
+        var _this = this;
         // console.log("Passou no interceptor");
         return next.handle(req)
             .catch(function (error, caught) {
@@ -546,13 +553,23 @@ var ErrorInterceptor = /** @class */ (function () {
             }
             console.log("Erro detectado pelo interceptor:"); // A responsabilidade de imprimir na tela e aqui do interceptor
             console.log(errorObj);
+            switch (errorObj.status) {
+                case 403:
+                    _this.handle403();
+                    break;
+            }
             return __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__["Observable"].throw(error);
         });
     };
+    ErrorInterceptor.prototype.handle403 = function () {
+        this.storage.setLocalUser(null);
+    };
     ErrorInterceptor = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])()
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__services_storage_service__["a" /* StorageService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__services_storage_service__["a" /* StorageService */]) === "function" && _a || Object])
     ], ErrorInterceptor);
     return ErrorInterceptor;
+    var _a;
 }());
 
 // Declaração do provider do interceptor

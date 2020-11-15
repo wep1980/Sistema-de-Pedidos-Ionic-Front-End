@@ -78,7 +78,14 @@ var ProfilePage = /** @class */ (function () {
             this.clienteService.findByEmail(localUser.email).subscribe(function (response) {
                 _this.cliente = response;
                 _this.getImageIfExists();
-            }, function (error) { });
+            }, function (error) {
+                if (error.status == 403) {
+                    _this.navCtrl.setRoot('HomePage');
+                }
+            });
+        }
+        else {
+            this.navCtrl.setRoot('HomePage');
         }
     };
     /**

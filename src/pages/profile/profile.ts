@@ -19,8 +19,8 @@ export class ProfilePage {
   cliente: ClienteDTO;
 
   constructor(
-    public navCtrl: NavController, 
-    public navParams: NavParams, 
+    public navCtrl: NavController,
+    public navParams: NavParams,
     public storage: StorageService,
     public clienteService: ClienteService) {
   }
@@ -28,14 +28,21 @@ export class ProfilePage {
   ionViewDidLoad() {
     let localUser = this.storage.getLocalUser(); // Codigo temporario apenas para mostrar o email na tela
     //console.log(localUser);
-    if(localUser && localUser.email){
-     // this.email = localUser.email; // Codigo provisorio
-     this.clienteService.findByEmail(localUser.email).subscribe(response => {
-       this.cliente = response;
-       this.getImageIfExists();
-     },
-     error =>{});
+    if (localUser && localUser.email) {
+      // this.email = localUser.email; // Codigo provisorio
+      this.clienteService.findByEmail(localUser.email).subscribe(response => {
+        this.cliente = response;
+        this.getImageIfExists();
+      },
+        error => {
+          if (error.status == 403) {
+            this.navCtrl.setRoot('HomePage');
+          }
+        });
 
+    }
+    else {
+      this.navCtrl.setRoot('HomePage');
     }
   }
 
@@ -43,11 +50,11 @@ export class ProfilePage {
   /**
    * Método que verifica se a imagem que vem do bucket da amazon existe
    */
-  getImageIfExists(){
+  getImageIfExists() {
     this.clienteService.getImageFromBucket(this.cliente.id).subscribe(response => {
       this.cliente.imageUrl = `${API_CONFIG.bucketBaseUrl}/cp${this.cliente.id}.jpg`;
     },
-    error =>{});
+      error => { });
   }
 
 }
