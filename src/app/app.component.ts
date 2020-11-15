@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { AuthService } from '../services/auth.service';
 
 
 
@@ -16,15 +17,20 @@ export class MyApp {
 
   rootPage: String = 'HomePage'; // Configuração da página inicial do aplicativo
 
-  pages: Array<{title: string, component: String }>;
+  pages: Array<{ title: string, component: String }>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+  constructor(
+    public platform: Platform,
+    public statusBar: StatusBar,
+    public splashScreen: SplashScreen,
+    public auth: AuthService) {
     this.initializeApp();
 
     // Paginas que aparecem no menu
     this.pages = [
       { title: 'Profile', component: 'ProfilePage' },
-      { title: 'Categorias', component: 'CategoriasPage' }
+      { title: 'Categorias', component: 'CategoriasPage' },
+      { title: 'Logout', component: '' }
     ];
 
   }
@@ -38,9 +44,19 @@ export class MyApp {
     });
   }
 
-  openPage(page) {
-    // Reset the content nav to have just this page
-    // we wouldn't want the back button to show in this scenario
-    this.nav.setRoot(page.component);
+  /**
+   * Tipando o page que vai ser um objeto que tera titulo e um componente, com isso pode ser acessado os atributos.
+   * @param page 
+   */
+  openPage(page: { title: string, component: string }) {
+    switch (page.title) {
+      case 'Logout':
+        this.auth.logout(); // retira o token do usuario do armazenamento(LocalStorage)
+        this.nav.setRoot('HomePage'); // Redireciona para pagina de login
+        break;
+
+      default:
+        this.nav.setRoot(page.component);
+    }
   }
 }
