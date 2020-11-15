@@ -39,7 +39,6 @@ export class AuthService {
                 observe: 'response',
                 responseType: 'text'
             });
-
     }
 
     /**
@@ -59,8 +58,26 @@ export class AuthService {
     /**
      * Metodo de logout
      */
-    logout(){
+    logout() {
         this.storage.setLocalUser(null); // Remove do localstorage o usuario
+    }
+
+    /**
+     * Metodo que atualiza o token quando esta proximo de expirar.
+     * Quando o usuario utilizar o app nao vai precisar logar caso o token ainda esteja valido.
+     * 
+     * OBS: O token e incluido automaticamente na requisição.
+     * 
+     * responseType: 'text' -> O response type e do tipo text pq a resposta vem em um corpo vazio e para o framework
+     * não dar erro de parse achando que e JSON.
+     */
+    refreshToken() {
+        return this.http.post(`${API_CONFIG.baseUrl}/auth/refresh_token`,
+            {}, // Os dados que serão enviados nesse requisição e um objeto vazio(Não tem nada para ser enviado)
+            {
+                observe: 'response',
+                responseType: 'text'
+            });
     }
 
 }

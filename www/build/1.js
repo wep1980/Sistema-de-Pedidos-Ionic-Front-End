@@ -90,6 +90,16 @@ var HomePage = /** @class */ (function () {
         this.menu.swipeEnable(true);
     };
     /**
+     * Método de ciclo de vida do token que permite o usuario entrar no app sem logar caso o token ainda esteja valido
+     */
+    HomePage.prototype.ionViewDidEnter = function () {
+        var _this = this;
+        this.auth.refreshToken().subscribe(function (response) {
+            _this.auth.successfulLogin(response.headers.get('Authorization'));
+            _this.navCtrl.setRoot('CategoriasPage');
+        }, function (error) { });
+    };
+    /**
      * Metodo que faz a navegação da pagina homePage para CategoriasPage
      *
      * this.navCtrl -> Para acessar qualquer elemento de uma classe e necessario chamar o this. antes

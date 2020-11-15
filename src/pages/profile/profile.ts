@@ -34,14 +34,14 @@ export class ProfilePage {
         this.cliente = response;
         this.getImageIfExists();
       },
-        error => {
+        error => { // Tratamento do erro 403 caso ocorra, e redirecionamento para a pagina HomePage
           if (error.status == 403) {
             this.navCtrl.setRoot('HomePage');
           }
         });
 
     }
-    else {
+    else { // Caso de algum problemna no token a pagina tb sera redirecionada para HomePage
       this.navCtrl.setRoot('HomePage');
     }
   }

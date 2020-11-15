@@ -16,7 +16,7 @@ import { AuthService } from '../../services/auth.service';
 export class HomePage {
 
   /**Sera feito o binding desse objeto, ou seja sera capturado os dados da tela de login */
-  creds : CredenciaisDTO = {
+  creds: CredenciaisDTO = {
     email: "",
     senha: ""
   };
@@ -29,7 +29,7 @@ export class HomePage {
    * auth: AuthService -> injeção do objeto que conbtrola a autenticação
    */
   constructor(
-    public navCtrl: NavController, 
+    public navCtrl: NavController,
     public menu: MenuController,
     public auth: AuthService) {
 
@@ -50,6 +50,18 @@ export class HomePage {
   }
 
   /**
+   * Método de ciclo de vida do token que permite o usuario entrar no app sem logar caso o token ainda esteja valido
+   */
+  ionViewDidEnter() {
+    this.auth.refreshToken().subscribe(response => {
+      this.auth.successfulLogin(response.headers.get('Authorization'));
+      this.navCtrl.setRoot('CategoriasPage');
+    },
+      error => { });
+  }
+
+
+  /**
    * Metodo que faz a navegação da pagina homePage para CategoriasPage
    *  
    * this.navCtrl -> Para acessar qualquer elemento de uma classe e necessario chamar o this. antes
@@ -62,7 +74,7 @@ export class HomePage {
       this.navCtrl.setRoot('CategoriasPage'); // Navegação sem empilhamento
       // this.navCtrl.push('CategoriasPage'); // Navegação com empilhamento
     },
-    error => {});
+      error => { });
     //console.log(this.creds);
   }
 

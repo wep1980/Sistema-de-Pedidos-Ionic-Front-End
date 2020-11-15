@@ -86,7 +86,7 @@ var CategoriaService = /** @class */ (function () {
      * O retorno do método então e do tipo Observable< CategoriaDTO[] >
      */
     CategoriaService.prototype.findAll = function () {
-        return this.http.get(__WEBPACK_IMPORTED_MODULE_2__config_api_config__["a" /* API_CONFIG */].baseUrl + "/categoriass");
+        return this.http.get(__WEBPACK_IMPORTED_MODULE_2__config_api_config__["a" /* API_CONFIG */].baseUrl + "/categorias");
     };
     CategoriaService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])() // A Classe pode ser injetada em outras classes
@@ -168,6 +168,22 @@ var AuthService = /** @class */ (function () {
      */
     AuthService.prototype.logout = function () {
         this.storage.setLocalUser(null); // Remove do localstorage o usuario
+    };
+    /**
+     * Metodo que atualiza o token quando esta proximo de expirar.
+     * Quando o usuario utilizar o app nao vai precisar logar caso o token ainda esteja valido.
+     *
+     * OBS: O token e incluido automaticamente na requisição.
+     *
+     * responseType: 'text' -> O response type e do tipo text pq a resposta vem em um corpo vazio e para o framework
+     * não dar erro de parse achando que e JSON.
+     */
+    AuthService.prototype.refreshToken = function () {
+        return this.http.post(__WEBPACK_IMPORTED_MODULE_3__config_api_config__["a" /* API_CONFIG */].baseUrl + "/auth/refresh_token", {}, // Os dados que serão enviados nesse requisição e um objeto vazio(Não tem nada para ser enviado)
+        {
+            observe: 'response',
+            responseType: 'text'
+        });
     };
     AuthService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["Injectable"])(),
@@ -623,10 +639,9 @@ var ErrorInterceptor = /** @class */ (function () {
     };
     ErrorInterceptor = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__services_storage_service__["a" /* StorageService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__services_storage_service__["a" /* StorageService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["a" /* AlertController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["a" /* AlertController */]) === "function" && _b || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3__services_storage_service__["a" /* StorageService */], __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["a" /* AlertController */]])
     ], ErrorInterceptor);
     return ErrorInterceptor;
-    var _a, _b;
 }());
 
 // Declaração do provider do interceptor
