@@ -1,4 +1,4 @@
-webpackJsonp([3],{
+webpackJsonp([4],{
 
 /***/ 152:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -119,14 +119,18 @@ webpackEmptyAsyncContext.id = 163;
 var map = {
 	"../pages/categorias/categorias.module": [
 		681,
-		2
+		3
 	],
 	"../pages/home/home.module": [
 		682,
-		1
+		2
 	],
 	"../pages/profile/profile.module": [
 		683,
+		1
+	],
+	"../pages/signup/signup.module": [
+		684,
 		0
 	]
 };
@@ -332,7 +336,8 @@ var AppModule = /** @class */ (function () {
                     links: [
                         { loadChildren: '../pages/categorias/categorias.module#CategoriasPageModule', name: 'CategoriasPage', segment: 'categorias', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/home/home.module#HomeModule', name: 'HomePage', segment: 'home', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/profile/profile.module#ProfilePageModule', name: 'ProfilePage', segment: 'profile', priority: 'low', defaultHistory: [] }
+                        { loadChildren: '../pages/profile/profile.module#ProfilePageModule', name: 'ProfilePage', segment: 'profile', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/signup/signup.module#SignupPageModule', name: 'SignupPage', segment: 'signup', priority: 'low', defaultHistory: [] }
                     ]
                 }),
             ],

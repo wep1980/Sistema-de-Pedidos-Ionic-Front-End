@@ -78,6 +78,12 @@ export class HomePage {
     //console.log(this.creds);
   }
 
-  /** Executando ação ao entrar e sair da pagina */
+
+  signup(){
+    // push() -> metodo que empilha a pagina e possui o botao de voltar
+    this.navCtrl.push('SignupPage');
+  }
+
+ 
 
 }
