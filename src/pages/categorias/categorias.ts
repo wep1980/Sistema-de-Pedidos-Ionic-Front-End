@@ -51,8 +51,12 @@ export class CategoriasPage {
   }
 
 
-  showProdutos(){
-     this.navCtrl.push('ProdutosPage');
+  /**
+   * Fazendo navegação passando parametros de uma pagina para outra.
+   * categoria_id -> Nome do atributo e o valor do atributo e o categoria_id que esta chegando como parametro no método
+   */
+  showProdutos(categoria_id : string){
+     this.navCtrl.push('ProdutosPage', {categoria_id : categoria_id});
   }
 
 }

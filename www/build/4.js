@@ -1,6 +1,6 @@
 webpackJsonp([4],{
 
-/***/ 681:
+/***/ 682:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8,7 +8,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CategoriasPageModule", function() { return CategoriasPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(87);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__categorias__ = __webpack_require__(688);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__categorias__ = __webpack_require__(689);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -38,14 +38,14 @@ var CategoriasPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 688:
+/***/ 689:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CategoriasPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(87);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__config_api_config__ = __webpack_require__(63);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__config_api_config__ = __webpack_require__(44);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_domain_categoria_service__ = __webpack_require__(350);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -95,12 +95,16 @@ var CategoriasPage = /** @class */ (function () {
          */
         function (error) { }); // Se for necessario fazer algo a mais do que imprimir na tela, sera feito aqui
     };
-    CategoriasPage.prototype.showProdutos = function () {
-        this.navCtrl.push('ProdutosPage');
+    /**
+     * Fazendo navegação passando parametros de uma pagina para outra.
+     * categoria_id -> Nome do atributo e o valor do atributo e o categoria_id que esta chegando como parametro no método
+     */
+    CategoriasPage.prototype.showProdutos = function (categoria_id) {
+        this.navCtrl.push('ProdutosPage', { categoria_id: categoria_id });
     };
     CategoriasPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-            selector: 'page-categorias',template:/*ion-inline-start:"C:\workspace ionic\ionic-spring-frontend\src\pages\categorias\categorias.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle> <!--Colocando botão iniciar na pagina inicial -->\n       <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Categorias</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n\n  <ion-list>\n<!-- button ion-item -> Todo item fica clicavel -- Diretiva do Angular *ngFor = lê uma coleção e repetir o \n  numero de vezes da coleção. \n  *ngFor="let item of items" = Diretiva que percorre a lista de items( VARIAVEL CRIADA NO CONTROLADOR ) \n  e cada elemento recebe o apelido de item.  (click)="showProdutos()-> binding de produtos, apertou na categoria exibe os produtos -->\n    <button ion-item *ngFor="let item of items" (click)="showProdutos()">\n      <ion-thumbnail item-start>\n        <!-- {{}} INTERPOLAÇÃO bucketUrl(variavel criada no controlador) com concatenação /cat que referencia o \n          nome das imagens de categoria e busca o id de cada uma das imagens -->\n        <img src="{{bucketUrl}}/cat{{item.id}}.jpg" alt=""> \n      </ion-thumbnail>  \n      <!-- {{}} INTERPOLAÇÃO = Interpola o conteudo do HTML com o DADO que veio do controlador  -->\n        <h2>{{ item.nome }}</h2> \n    </button>\n\n  </ion-list>\n\n</ion-content>\n'/*ion-inline-end:"C:\workspace ionic\ionic-spring-frontend\src\pages\categorias\categorias.html"*/,
+            selector: 'page-categorias',template:/*ion-inline-start:"C:\workspace ionic\ionic-spring-frontend\src\pages\categorias\categorias.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle> <!--Colocando botão iniciar na pagina inicial -->\n       <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Categorias</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n\n  <ion-list>\n<!-- button ion-item -> Todo item fica clicavel -- Diretiva do Angular *ngFor = lê uma coleção e repetir o \n  numero de vezes da coleção. \n  *ngFor="let item of items" = Diretiva que percorre a lista de items( VARIAVEL CRIADA NO CONTROLADOR ) \n  e cada elemento recebe o apelido de item.  (click)="showProdutos()-> binding de produtos que pega o id da categoria selecionada, apertou na categoria exibe os produtos -->\n    <button ion-item *ngFor="let item of items" (click)="showProdutos(item.id)">\n      <ion-thumbnail item-start>\n        <!-- {{}} INTERPOLAÇÃO bucketUrl(variavel criada no controlador) com concatenação /cat que referencia o \n          nome das imagens de categoria e busca o id de cada uma das imagens -->\n        <img src="{{bucketUrl}}/cat{{item.id}}.jpg" alt=""> \n      </ion-thumbnail>  \n      <!-- {{}} INTERPOLAÇÃO = Interpola o conteudo do HTML com o DADO que veio do controlador  -->\n        <h2>{{ item.nome }}</h2> \n    </button>\n\n  </ion-list>\n\n</ion-content>\n'/*ion-inline-end:"C:\workspace ionic\ionic-spring-frontend\src\pages\categorias\categorias.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */],
