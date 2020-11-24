@@ -130,11 +130,11 @@ var map = {
 		2
 	],
 	"../pages/profile/profile.module": [
-		686,
+		685,
 		1
 	],
 	"../pages/signup/signup.module": [
-		685,
+		686,
 		0
 	]
 };
@@ -295,7 +295,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-//import { Observable } from 'rxjs/Rx'; // IMPORTANTE: IMPORT ATUALIZADO
 var ProdutoService = /** @class */ (function () {
     function ProdutoService(http) {
         this.http = http;
@@ -303,12 +302,20 @@ var ProdutoService = /** @class */ (function () {
     ProdutoService.prototype.findByCategoria = function (categoria_id) {
         return this.http.get(__WEBPACK_IMPORTED_MODULE_2__config_api_config__["a" /* API_CONFIG */].baseUrl + "/produtos/?categorias=" + categoria_id);
     };
+    /**
+     * Metodo que busca as fotos das categorias do tipo Observable<any>
+     * responseType : 'blob' -> Resposta para imagem
+     * @param id
+     */
+    ProdutoService.prototype.getSmallImageFromBucket = function (id) {
+        var url = __WEBPACK_IMPORTED_MODULE_2__config_api_config__["a" /* API_CONFIG */].bucketBaseUrl + "/prod" + id + "-small.jpg";
+        return this.http.get(url, { responseType: 'blob' });
+    };
     ProdutoService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["Injectable"])(),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["b" /* HttpClient */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["b" /* HttpClient */]) === "function" && _a || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_common_http__["b" /* HttpClient */]])
     ], ProdutoService);
     return ProdutoService;
-    var _a;
 }());
 
 //# sourceMappingURL=produto.service.js.map
@@ -393,8 +400,8 @@ var AppModule = /** @class */ (function () {
                         { loadChildren: '../pages/categorias/categorias.module#CategoriasPageModule', name: 'CategoriasPage', segment: 'categorias', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/home/home.module#HomeModule', name: 'HomePage', segment: 'home', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/produtos/produtos.module#ProdutosPageModule', name: 'ProdutosPage', segment: 'produtos', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/signup/signup.module#SignupPageModule', name: 'SignupPage', segment: 'signup', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/profile/profile.module#ProfilePageModule', name: 'ProfilePage', segment: 'profile', priority: 'low', defaultHistory: [] }
+                        { loadChildren: '../pages/profile/profile.module#ProfilePageModule', name: 'ProfilePage', segment: 'profile', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/signup/signup.module#SignupPageModule', name: 'SignupPage', segment: 'signup', priority: 'low', defaultHistory: [] }
                     ]
                 }),
             ],
