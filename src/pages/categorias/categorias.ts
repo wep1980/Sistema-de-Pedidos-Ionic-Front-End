@@ -50,4 +50,9 @@ export class CategoriasPage {
     error => {}); // Se for necessario fazer algo a mais do que imprimir na tela, sera feito aqui
   }
 
+
+  showProdutos(){
+     this.navCtrl.push('ProdutosPage');
+  }
+
 }

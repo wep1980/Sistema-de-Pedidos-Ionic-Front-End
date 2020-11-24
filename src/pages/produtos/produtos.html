@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Produtos</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <button ion-item *ngFor="let item of items">
+      <ion-thumbnail item-start>
+        <!--assets/imgs/prod.jpg -> Imagem padrão, quando o produto não tem foto-->
+        <img [src]="item.imageUrl || 'assets/imgs/prod.jpg'">
+      </ion-thumbnail>
+      <h2>{{item.nome}}</h2>
+      <!--currency -> é um pipe para formatar o número ao estile de moeda-->
+      <p>{{item.preco | currency}}</p>
+    </button>
+  </ion-list>
+</ion-content>
