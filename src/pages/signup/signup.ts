@@ -64,7 +64,7 @@ export class SignupPage {
       this.estados = response;
       //Pega o primeiro elemento da lista e atribui na lista estadoId do formulario
       this.formGroup.controls.estadoId.setValue(this.estados[0].id);
-      console.log(this.estados);
+      //console.log(this.estados);
       // Busca as cidades correspondente ao estado selecionado
       this.updateCidades();
     },
@@ -73,7 +73,7 @@ export class SignupPage {
 
   updateCidades(){
     // Variavel que pega o estado selecionado na lista do HTML do formulario
-    let estado_id = this.formGroup.value.estado_id;
+    let estado_id = this.formGroup.value.estadoId;
     this.cidadeService.findAll(estado_id).subscribe(response => {
       this.cidades = response;
 

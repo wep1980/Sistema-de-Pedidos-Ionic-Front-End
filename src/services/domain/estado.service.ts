@@ -22,7 +22,7 @@ export class EstadoService {
      * O Angular encapsula essa requisição assincrona por meio de um objeto chamado Observable.
      * O retorno do método então e do tipo Observable< EstadoDTO[] > 
      */
-    findAll() : Observable <EstadoDTO[]> {
+    findAll() : Observable<EstadoDTO[]> {
 
         return this.http.get<EstadoDTO[]> (`${API_CONFIG.baseUrl}/estados`);
     }

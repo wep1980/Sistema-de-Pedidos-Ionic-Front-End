@@ -35,7 +35,7 @@ var SignupPageModule = /** @class */ (function () {
             ],
             providers: [
                 __WEBPACK_IMPORTED_MODULE_2__services_domain_cidade_service__["a" /* CidadeService */],
-                __WEBPACK_IMPORTED_MODULE_3__services_domain_estado_service__["a" /* EstadoService */] // // Declaração de servico dos estados
+                __WEBPACK_IMPORTED_MODULE_3__services_domain_estado_service__["a" /* EstadoService */]
             ]
         })
     ], SignupPageModule);
@@ -81,15 +81,16 @@ var CidadeService = /** @class */ (function () {
      * O Angular encapsula essa requisição assincrona por meio de um objeto chamado Observable.
      * O retorno do método então e do tipo Observable< CidadeDTO[] >
      */
-    CidadeService.prototype.findAll = function (estado_Id) {
-        return this.http.get(__WEBPACK_IMPORTED_MODULE_2__config_api_config__["a" /* API_CONFIG */].baseUrl + "/estados/" + estado_Id + "/cidades");
+    CidadeService.prototype.findAll = function (estado_id) {
+        return this.http.get(__WEBPACK_IMPORTED_MODULE_2__config_api_config__["a" /* API_CONFIG */].baseUrl + "/estados/" + estado_id + "/cidades");
     };
     CidadeService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])() // A Classe pode ser injetada em outras classes
         ,
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_common_http__["b" /* HttpClient */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["b" /* HttpClient */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["b" /* HttpClient */]) === "function" && _a || Object])
     ], CidadeService);
     return CidadeService;
+    var _a;
 }());
 
 //# sourceMappingURL=cidade.service.js.map
@@ -137,9 +138,10 @@ var EstadoService = /** @class */ (function () {
     EstadoService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])() // A Classe pode ser injetada em outras classes
         ,
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_common_http__["b" /* HttpClient */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["b" /* HttpClient */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["b" /* HttpClient */]) === "function" && _a || Object])
     ], EstadoService);
     return EstadoService;
+    var _a;
 }());
 
 //# sourceMappingURL=estado.service.js.map
@@ -211,7 +213,7 @@ var SignupPage = /** @class */ (function () {
             _this.estados = response;
             //Pega o primeiro elemento da lista e atribui na lista estadoId do formulario
             _this.formGroup.controls.estadoId.setValue(_this.estados[0].id);
-            console.log(_this.estados);
+            //console.log(this.estados);
             // Busca as cidades correspondente ao estado selecionado
             _this.updateCidades();
         }, function (error) { });
@@ -219,7 +221,7 @@ var SignupPage = /** @class */ (function () {
     SignupPage.prototype.updateCidades = function () {
         var _this = this;
         // Variavel que pega o estado selecionado na lista do HTML do formulario
-        var estado_id = this.formGroup.value.estado_id;
+        var estado_id = this.formGroup.value.estadoId;
         this.cidadeService.findAll(estado_id).subscribe(function (response) {
             _this.cidades = response;
             /**
@@ -236,13 +238,10 @@ var SignupPage = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
             selector: 'page-signup',template:/*ion-inline-start:"C:\workspace ionic\ionic-spring-frontend\src\pages\signup\signup.html"*/'<!--Pagina de cadastro para novos usuarios-->\n\n<ion-header>\n  <ion-navbar>\n    <ion-title>Signup</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n  \n  <!-- $event.preventDefault() -> Previne de a pagina ser enviada, o controle sera feito na mão -->\n  <!--Para fazer o binding dos elementos dos elementos do formGroup que esta no signup.ts e preciso fazer\n  a troca de onde tem name="" por formControlName="" -- e dentro da tag form fazer um binding de atributo\n  do formGroup criado em signup.ts -- [formGroup]="formGroup" -->\n  <form [formGroup]="formGroup" (ngSubmit)="signupUser(); $event.preventDefault()">\n\n    <ion-item>\n      <ion-label stacked>Nome*</ion-label>\n      <ion-input formControlName="nome" type="text"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label stacked>Email*</ion-label>\n      <ion-input formControlName="email" type="text"></ion-input>\n    </ion-item>\n\n      <ion-list radio-group formControlName="tipoCliente">\n        <ion-list-header>\n          Tipo de cliente\n        </ion-list-header>\n\n        <ion-item>\n          <ion-label>Pessoa física</ion-label>\n          <ion-radio checked="true" value="1"></ion-radio>\n        </ion-item>\n        \n        <ion-item>\n          <ion-label>Pessoa jurídica</ion-label>\n          <ion-radio value="2"></ion-radio>\n        </ion-item>\n      </ion-list>\n\n    <ion-item>\n      <ion-label stacked>CPF ou CNPJ</ion-label>\n      <ion-input formControlName="cpfOuCnpj" type="text"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label stacked>Senha*</ion-label>\n      <ion-input formControlName="senha" type="password"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label stacked>Logradouro*</ion-label>\n      <ion-input formControlName="logradouro" type="text"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label stacked>Número*</ion-label>\n      <ion-input formControlName="numero" type="text"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label stacked>Complemento</ion-label>\n      <ion-input formControlName="complemento" type="text"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label stacked>Bairro</ion-label>\n      <ion-input formControlName="bairro" type="text"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label stacked>CEP*</ion-label>\n      <ion-input formControlName="cep" type="text"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label stacked>Telefone 1*</ion-label>\n      <ion-input formControlName="telefone1" type="text"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label stacked>Telefone 2</ion-label>\n      <ion-input formControlName="telefone2" type="text"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label stacked>Telefone 3</ion-label>\n      <ion-input formControlName="telefone3" type="text"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label stacked>Estado*</ion-label>\n\n      <!--(ionChange)="updateCidades()" -> Toda vez que um estado e selecionado ele carrega as cidades do estado -->\n      <ion-select formControlName="estadoId" (ionChange)="updateCidades()">\n\n        <!-- *ngFor="let estado of estados" = Diretiva que percorre a lista de estados(VARIAVEL CRIADA NO CONTROLADOR)\n        e cada elemento recebe o apelido de estado.\n        first as f -> Referencia para o primeiro estado da lista.\n        [value]="estado.id" -> Esse e o valor do ion-option.\n        [selected]="f" -> Mostra o primeiro estado na lista -->\n        <ion-option *ngFor="let estado of estados; first as f" \n                    [value]="estado.id" [selected]="f">{{estado.nome}}</ion-option>\n      </ion-select>\n    </ion-item>\n\n    <ion-item>\n      <ion-label stacked>Cidade*</ion-label>\n      <ion-select formControlName="cidadeId">\n        <ion-option *ngFor="let cidade of cidades" [value]="cidade.id">{{cidade.nome}}</ion-option>\n      </ion-select>\n    </ion-item>\n\n    <button ion-button block type="submit">Criar conta</button>\n    \n  </form>\n</ion-content>'/*ion-inline-end:"C:\workspace ionic\ionic-spring-frontend\src\pages\signup\signup.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */],
-            __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */],
-            __WEBPACK_IMPORTED_MODULE_3__services_domain_cidade_service__["a" /* CidadeService */],
-            __WEBPACK_IMPORTED_MODULE_4__services_domain_estado_service__["a" /* EstadoService */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__services_domain_cidade_service__["a" /* CidadeService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__services_domain_cidade_service__["a" /* CidadeService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_4__services_domain_estado_service__["a" /* EstadoService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__services_domain_estado_service__["a" /* EstadoService */]) === "function" && _e || Object])
     ], SignupPage);
     return SignupPage;
+    var _a, _b, _c, _d, _e;
 }());
 
 //# sourceMappingURL=signup.js.map

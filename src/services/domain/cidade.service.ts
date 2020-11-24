@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { API_CONFIG } from "../../config/api.config";
-import { Observable } from "rxjs/Rx"; // IMPORTAÇÃO CORRETA DO Observable
 import { CidadeDTO } from "../../models/cidade.dto";
+import { Observable } from "rxjs/Rx"; // IMPORTAÇÃO CORRETA DO Observable
 
 @Injectable() // A Classe pode ser injetada em outras classes
 export class CidadeService {
@@ -22,9 +22,8 @@ export class CidadeService {
      * O Angular encapsula essa requisição assincrona por meio de um objeto chamado Observable.
      * O retorno do método então e do tipo Observable< CidadeDTO[] > 
      */
-    findAll(estado_Id : string) : Observable <CidadeDTO[]> {
-
-        return this.http.get<CidadeDTO[]> (`${API_CONFIG.baseUrl}/estados/${estado_Id}/cidades`);
+    findAll(estado_id : string) : Observable<CidadeDTO[]>  {
+        return this.http.get<CidadeDTO[]>(`${API_CONFIG.baseUrl}/estados/${estado_id}/cidades`);
     }
 
 }
