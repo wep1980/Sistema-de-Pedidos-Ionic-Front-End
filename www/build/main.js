@@ -1,4 +1,4 @@
-webpackJsonp([5],{
+webpackJsonp([6],{
 
 /***/ 152:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -119,22 +119,26 @@ webpackEmptyAsyncContext.id = 163;
 var map = {
 	"../pages/categorias/categorias.module": [
 		682,
-		4
+		5
 	],
 	"../pages/home/home.module": [
 		683,
+		4
+	],
+	"../pages/produto-detail/produto-detail.module": [
+		684,
 		3
 	],
 	"../pages/produtos/produtos.module": [
-		684,
+		685,
 		2
 	],
 	"../pages/profile/profile.module": [
-		685,
+		686,
 		1
 	],
 	"../pages/signup/signup.module": [
-		686,
+		687,
 		0
 	]
 };
@@ -399,6 +403,7 @@ var AppModule = /** @class */ (function () {
                     links: [
                         { loadChildren: '../pages/categorias/categorias.module#CategoriasPageModule', name: 'CategoriasPage', segment: 'categorias', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/home/home.module#HomeModule', name: 'HomePage', segment: 'home', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/produto-detail/produto-detail.module#ProdutoDetailPageModule', name: 'ProdutoDetailPage', segment: 'produto-detail', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/produtos/produtos.module#ProdutosPageModule', name: 'ProdutosPage', segment: 'produtos', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/profile/profile.module#ProfilePageModule', name: 'ProfilePage', segment: 'profile', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/signup/signup.module#SignupPageModule', name: 'SignupPage', segment: 'signup', priority: 'low', defaultHistory: [] }

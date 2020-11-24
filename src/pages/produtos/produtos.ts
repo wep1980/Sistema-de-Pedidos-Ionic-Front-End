@@ -44,4 +44,12 @@ export class ProdutosPage {
         error => {});
     }
   }
+
+
+  /**
+   * Metodo que exibe os detalhes dos produtos
+   */
+  showDatail(){
+     this.navCtrl.push('ProdutoDetailPage');
+  }
 }
