@@ -5,6 +5,7 @@ import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HTTP_INTERCEPTORS
 import { Observable } from 'rxjs/Rx'; // IMPORTANTE: IMPORT ATUALIZADO
 import { StorageService } from '../../services/storage.service';
 import { AlertController } from 'ionic-angular';
+import { FieldMessage } from '../../models/fieldmessage';
 
 
 
@@ -53,6 +54,9 @@ export class ErrorInterceptor implements HttpInterceptor {
                     case 403:
                         this.handle403();
                         break;
+                    case 422:
+                        this.handle422(errorObj);
+                        break;
 
                     default:
                         this.handleDefaultError(errorObj);
@@ -87,6 +91,21 @@ export class ErrorInterceptor implements HttpInterceptor {
         alert.present(); // Mostra o botão
     }
 
+
+    handle422(errorObj){
+        let alert = this.alertCtrl.create({
+            title: 'Erro 422: Validação',
+            message: this.listErrors(errorObj.errors), // Função que monta a lista de erros de acordo com backend classe ValidationError variavel = private List<FieldMessage> errors = new ArrayList<>();
+            enableBackdropDismiss: false,
+            buttons: [
+                {
+                    text: 'Ok'
+                }
+            ]
+        });
+        alert.present(); // Mostra o botão
+    }
+
     /**
      * Metodo de error
      * @param errorObj 
@@ -103,6 +122,16 @@ export class ErrorInterceptor implements HttpInterceptor {
             ]
         });
         alert.present(); // Mostra o botão
+    }
+
+    // Recebe uma lista de FieldMessage[]
+    listErrors(messages: FieldMessage[]) : string {
+        let s : string = '';
+        /*Percorre todos os elementos da lista de mesagem acrescentando um <p>paragrafo destacando o nome do campo<strong> mais a descrição da mesagem*/
+        for(var i = 0; i < messages.length; i++){
+            s = s + '<p><strong>' + messages[i].fieldName + "</strong>: " + messages[i].message
+        }
+        return s;
     }
 }
 

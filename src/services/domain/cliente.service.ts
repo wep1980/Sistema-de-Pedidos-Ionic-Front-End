@@ -44,4 +44,18 @@ export class ClienteService {
         return this.http.get(url, {responseType : 'blob'});
     }
 
+
+    /**
+     * Método para inserir cliente
+     * @param obj 
+     */
+    insert(obj : ClienteDTO){
+       return this.http.post(`${API_CONFIG.baseUrl}/clientes`, obj, 
+       {
+          observe: 'response',
+          responseType: 'text' // Como o corpo vem vazio isso evita o erro de parse do JSON
+       }
+       );
+    }
+
 }
