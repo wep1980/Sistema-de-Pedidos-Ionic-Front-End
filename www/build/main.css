@@ -1,3 +1,4 @@
+@charset "UTF-8";
 .ion-ios-add:before {
   content: "\f102";
 }
@@ -25708,6 +25709,15 @@ img {
   margin: auto;
   display: block;
   padding: 10px;
+}
+
+page-cart {
+  /*Alinha os botões de mais e menos na pagina de carrinho de compras nos produtos*/
+}
+
+page-cart .nolinebreak {
+  float: left;
+  padding-right: 10px;
 }
 
 page-profile .circle {

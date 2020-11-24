@@ -48,6 +48,7 @@ var CartPageModule = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__config_api_config__ = __webpack_require__(45);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_domain_cart_service__ = __webpack_require__(350);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_domain_produto_service__ = __webpack_require__(349);
+// Pagina que contra a pagina HTML e utiliza os metodos do cart.service.ts
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -96,16 +97,34 @@ var CartPage = /** @class */ (function () {
             _loop_1();
         }
     };
+    // Remove um item do carrinho
+    CartPage.prototype.removeItem = function (produto) {
+        this.items = this.cartService.removeProduto(produto).items;
+    };
+    // adiciona um item no carrinho
+    CartPage.prototype.increaseQuantity = function (produto) {
+        this.items = this.cartService.increaseQuantity(produto).items;
+    };
+    // diminui um item do carrinho
+    CartPage.prototype.decreaseQuantity = function (produto) {
+        this.items = this.cartService.decreaseQuantity(produto).items;
+    };
+    // mostra o valor total do carrinho
+    CartPage.prototype.total = function () {
+        return this.cartService.total();
+    };
+    // Metodo que permite continuar comprando
+    CartPage.prototype.goOn = function () {
+        this.navCtrl.setRoot('CategoriasPage');
+    };
     CartPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-            selector: 'page-cart',template:/*ion-inline-start:"C:\workspace ionic\ionic-spring-frontend\src\pages\cart\cart.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n        <ion-icon name="menu"></ion-icon>\n    </button>    \n    <ion-title>Cart</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n  <ion-list>\n    <!--items -> Criado em cart.ts-->\n    <ion-item *ngFor="let item of items">\n      <ion-thumbnail item-start>\n        <img [src]="item.produto.imageUrl || \'assets/imgs/prod.jpg\'">\n      </ion-thumbnail>\n      <h2>{{item.produto.nome}}</h2>\n      <!--currency-> Formato de dinheiro-->\n      <p>{{item.produto.preco | currency}}</p>\n      <p>{{item.quantidade}}</p>\n    </ion-item>\n  </ion-list>   \n</ion-content>\n'/*ion-inline-end:"C:\workspace ionic\ionic-spring-frontend\src\pages\cart\cart.html"*/,
+            selector: 'page-cart',template:/*ion-inline-start:"C:\workspace ionic\ionic-spring-frontend\src\pages\cart\cart.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n        <ion-icon name="menu"></ion-icon>\n    </button>    \n    <ion-title>Cart</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n  <ion-list>\n    <!--items -> Criado em cart.ts-->\n    <ion-item *ngFor="let item of items">\n      <ion-thumbnail item-start>\n        <img [src]="item.produto.imageUrl || \'assets/imgs/prod.jpg\'">\n      </ion-thumbnail>\n      <h2>{{item.produto.nome}}</h2>\n      <!--currency-> Formato de dinheiro-->\n      <p>{{item.produto.preco | currency}}</p>\n\n      <!--class="nolinebreak" -> Classe CSS criada em cart.scss-->\n      <ion-icon class="nolinebreak" name="remove-circle" color="primary" (click)="decreaseQuantity(item.produto)"></ion-icon>\n      <p class="nolinebreak">{{item.quantidade}}</p>\n      <ion-icon name="add-circle" color="primary" (click)="increaseQuantity(item.produto)"></ion-icon>\n\n      <!--item-end ->Coloca o icone na direita -->\n      <ion-icon name="trash" item-end color="danger" (click)="removeItem(item.produto)"></ion-icon>\n    </ion-item>\n\n    <ion-item *ngIf="total() > 0"> <!--Se o valor total for maio que 0 o valor sera mostrado-->\n      <h1>Total</h1>\n      <h1 item-end>{{total()}}</h1>\n    </ion-item>\n\n    <ion-item *ngIf="total() <= 0"> <!--Se o valor total for menor que 0 o valor não sera mostrado-->\n      <h1>Seu carrinho esta vazio</h1>\n    </ion-item>\n  </ion-list> \n\n  <button ion-button block (click)="goOn()">Continuar comprando</button> \n  \n</ion-content>\n'/*ion-inline-end:"C:\workspace ionic\ionic-spring-frontend\src\pages\cart\cart.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */],
-            __WEBPACK_IMPORTED_MODULE_3__services_domain_cart_service__["a" /* CartService */],
-            __WEBPACK_IMPORTED_MODULE_4__services_domain_produto_service__["a" /* ProdutoService */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__services_domain_cart_service__["a" /* CartService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__services_domain_cart_service__["a" /* CartService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_4__services_domain_produto_service__["a" /* ProdutoService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__services_domain_produto_service__["a" /* ProdutoService */]) === "function" && _d || Object])
     ], CartPage);
     return CartPage;
+    var _a, _b, _c, _d;
 }());
 
 //# sourceMappingURL=cart.js.map

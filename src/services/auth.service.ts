@@ -7,6 +7,7 @@ import { JwtHelper } from "angular2-jwt";
 import { API_CONFIG } from "../config/api.config";
 import { CredenciaisDTO } from "../models/credencias.dto";
 import { LocalUser } from "../models/local_user";
+import { CartService } from "./domain/cart.service";
 import { StorageService } from "./storage.service";
 
 
@@ -19,7 +20,8 @@ export class AuthService {
     // O HttpClient faz a comunicação com o ENDPOINT login
     constructor(
         public http: HttpClient,
-        public storage: StorageService) {
+        public storage: StorageService,
+        public cartService: CartService) {
 
     }
 
@@ -53,6 +55,7 @@ export class AuthService {
             email: this.jwtHelper.decodeToken(tok).sub // pegando o email do token
         };
         this.storage.setLocalUser(user);
+        this.cartService.createOrClearCart(); // Limpa o carrinho quando um cliente faz o login
     }
 
     /**

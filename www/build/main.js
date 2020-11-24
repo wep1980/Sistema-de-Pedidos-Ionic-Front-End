@@ -10,7 +10,8 @@ webpackJsonp([7],{
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angular2_jwt__ = __webpack_require__(391);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angular2_jwt___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_angular2_jwt__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__config_api_config__ = __webpack_require__(45);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__storage_service__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__domain_cart_service__ = __webpack_require__(350);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__storage_service__ = __webpack_require__(43);
 /* Serviço de Autorização -- Esse serviço precisa ser chamado na home.ts */
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -26,11 +27,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var AuthService = /** @class */ (function () {
     // O HttpClient faz a comunicação com o ENDPOINT login
-    function AuthService(http, storage) {
+    function AuthService(http, storage, cartService) {
         this.http = http;
         this.storage = storage;
+        this.cartService = cartService;
         // Instalado atraves do npm install --save angular2-jwt
         this.jwtHelper = new __WEBPACK_IMPORTED_MODULE_2_angular2_jwt__["JwtHelper"]();
     }
@@ -61,6 +64,7 @@ var AuthService = /** @class */ (function () {
             email: this.jwtHelper.decodeToken(tok).sub // pegando o email do token
         };
         this.storage.setLocalUser(user);
+        this.cartService.createOrClearCart(); // Limpa o carrinho quando um cliente faz o login
     };
     /**
      * Metodo de logout
@@ -86,10 +90,10 @@ var AuthService = /** @class */ (function () {
     };
     AuthService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["Injectable"])(),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_common_http__["b" /* HttpClient */],
-            __WEBPACK_IMPORTED_MODULE_4__storage_service__["a" /* StorageService */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["b" /* HttpClient */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["b" /* HttpClient */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_5__storage_service__["a" /* StorageService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__storage_service__["a" /* StorageService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_4__domain_cart_service__["a" /* CartService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__domain_cart_service__["a" /* CartService */]) === "function" && _c || Object])
     ], AuthService);
     return AuthService;
+    var _a, _b, _c;
 }());
 
 //# sourceMappingURL=auth.service.js.map
@@ -122,15 +126,15 @@ var map = {
 		6
 	],
 	"../pages/categorias/categorias.module": [
-		685,
+		684,
 		5
 	],
 	"../pages/home/home.module": [
-		686,
+		685,
 		4
 	],
 	"../pages/produto-detail/produto-detail.module": [
-		684,
+		686,
 		3
 	],
 	"../pages/produtos/produtos.module": [
@@ -138,11 +142,11 @@ var map = {
 		2
 	],
 	"../pages/profile/profile.module": [
-		689,
+		688,
 		1
 	],
 	"../pages/signup/signup.module": [
-		688,
+		689,
 		0
 	]
 };
@@ -254,6 +258,7 @@ var CartService = /** @class */ (function () {
     };
     /**
      * Metodo que verifica se o carrinho ja existe, senão existir e criado um novo
+     * Pega o carrinho que esta no localStorage
      */
     CartService.prototype.getCart = function () {
         var cart = this.storage.getCart();
@@ -267,7 +272,7 @@ var CartService = /** @class */ (function () {
      * @param produto
      */
     CartService.prototype.addProduto = function (produto) {
-        var cart = this.getCart();
+        var cart = this.getCart(); // Pega o carrinho que esta no localStorage
         // Verificando se o produto ja existe. findIndex() -> função que encontra a posição de um elemento(produtos que estão na lista do carrinho) e compara se o id do produto que veio como argumento exite, se o produto existir vai ser retornada a posição dele. 
         var position = cart.items.findIndex(function (x) { return x.produto.id == produto.id; });
         // Se nao existir vai ser retornada a posição menos 1 ( -1 )
@@ -277,11 +282,66 @@ var CartService = /** @class */ (function () {
         this.storage.setCart(cart); // Atualiza o carrinho
         return cart;
     };
+    /**
+     * metodo que remove o produto do carrinho
+     * @param produto
+     */
+    CartService.prototype.removeProduto = function (produto) {
+        var cart = this.getCart();
+        var position = cart.items.findIndex(function (x) { return x.produto.id == produto.id; });
+        if (position != -1) {
+            // splice(position, 1) -> remove. recebe a posição e o 1 indica uma remoção
+            cart.items.splice(position, 1);
+        }
+        this.storage.setCart(cart);
+        return cart;
+    };
+    /**
+     * Incrementa a quantidade de um produto no carrinho
+     * @param produto
+     */
+    CartService.prototype.increaseQuantity = function (produto) {
+        var cart = this.getCart();
+        var position = cart.items.findIndex(function (x) { return x.produto.id == produto.id; });
+        if (position != -1) {
+            cart.items[position].quantidade++;
+        }
+        this.storage.setCart(cart);
+        return cart;
+    };
+    /**
+     * Diminui a quantidade de um produto no carrinho
+     * @param produto
+     */
+    CartService.prototype.decreaseQuantity = function (produto) {
+        var cart = this.getCart();
+        var position = cart.items.findIndex(function (x) { return x.produto.id == produto.id; });
+        if (position != -1) {
+            cart.items[position].quantidade--;
+            if (cart.items[position].quantidade < 1) {
+                cart = this.removeProduto(produto);
+            }
+        }
+        this.storage.setCart(cart);
+        return cart;
+    };
+    /**
+     * Mostra o valor total do carrinho
+     */
+    CartService.prototype.total = function () {
+        var cart = this.getCart();
+        var soma = 0;
+        for (var i = 0; i < cart.items.length; i++) {
+            soma += cart.items[i].produto.preco * cart.items[i].quantidade;
+        }
+        return soma;
+    };
     CartService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__storage_service__["a" /* StorageService */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__storage_service__["a" /* StorageService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__storage_service__["a" /* StorageService */]) === "function" && _a || Object])
     ], CartService);
     return CartService;
+    var _a;
 }());
 
 //# sourceMappingURL=cart.service.js.map
@@ -487,12 +547,12 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["d" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_4__app_component__["a" /* MyApp */], {}, {
                     links: [
                         { loadChildren: '../pages/cart/cart.module#CartPageModule', name: 'CartPage', segment: 'cart', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/produto-detail/produto-detail.module#ProdutoDetailPageModule', name: 'ProdutoDetailPage', segment: 'produto-detail', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/categorias/categorias.module#CategoriasPageModule', name: 'CategoriasPage', segment: 'categorias', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/home/home.module#HomeModule', name: 'HomePage', segment: 'home', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/produto-detail/produto-detail.module#ProdutoDetailPageModule', name: 'ProdutoDetailPage', segment: 'produto-detail', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/produtos/produtos.module#ProdutosPageModule', name: 'ProdutosPage', segment: 'produtos', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/signup/signup.module#SignupPageModule', name: 'SignupPage', segment: 'signup', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/profile/profile.module#ProfilePageModule', name: 'ProfilePage', segment: 'profile', priority: 'low', defaultHistory: [] }
+                        { loadChildren: '../pages/profile/profile.module#ProfilePageModule', name: 'ProfilePage', segment: 'profile', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/signup/signup.module#SignupPageModule', name: 'SignupPage', segment: 'signup', priority: 'low', defaultHistory: [] }
                     ]
                 }),
             ],

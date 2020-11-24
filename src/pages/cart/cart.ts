@@ -1,7 +1,10 @@
+// Pagina que contra a pagina HTML e utiliza os metodos do cart.service.ts
+
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { API_CONFIG } from '../../config/api.config';
 import { CartItem } from '../../models/cart-item';
+import { ProdutoDTO } from '../../models/produto.dto';
 import { CartService } from '../../services/domain/cart.service';
 import { ProdutoService } from '../../services/domain/produto.service';
 
@@ -49,5 +52,30 @@ export class CartPage {
         error => {});
     }
   }  
+
+  // Remove um item do carrinho
+  removeItem(produto: ProdutoDTO) {
+    this.items = this.cartService.removeProduto(produto).items;
+  }
+
+  // adiciona um item no carrinho
+  increaseQuantity(produto: ProdutoDTO) {
+    this.items = this.cartService.increaseQuantity(produto).items;
+  }
+
+  // diminui um item do carrinho
+  decreaseQuantity(produto: ProdutoDTO) {
+    this.items = this.cartService.decreaseQuantity(produto).items;
+  }
+
+  // mostra o valor total do carrinho
+  total() : number {
+    return this.cartService.total();
+  }  
+
+  // Metodo que permite continuar comprando
+  goOn() {
+    this.navCtrl.setRoot('CategoriasPage');
+  }
 
 }
