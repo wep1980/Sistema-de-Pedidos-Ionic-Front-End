@@ -25,7 +25,7 @@ export class PaymentPage {
 
       this.pedido = this.navParams.get('pedido'); // Pega o objeto pedido que vem de outra pagina
 
-      console.log(this.pedido);
+     // console.log(this.pedido);
 
       // foi feito tambem na pagina de signup
       this.formGroup =  this.formBuilder.group({
@@ -37,7 +37,9 @@ export class PaymentPage {
 
   nextPage(){
     this.pedido.pagamento = this.formGroup.value; // Pegando a forma de pagamento do formulario
-    console.log(this.pedido);
+    //console.log(this.pedido);
+    // setRoot()-> É utilizado pq essa mesma pagina sera utilizada para mostrar(SEU PEDIDO FOI REGISTRADO, CODIDO TAL) então se tiver a seta para voltar vai ficar inconsistente pq o pedido ja vai ter sido registrado
+    this.navCtrl.setRoot('OrderConfirmationPage', {pedido: this.pedido});
   }
 
 }

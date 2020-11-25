@@ -5,10 +5,10 @@ webpackJsonp([7],{
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CategoriasPageModule", function() { return CategoriasPageModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(87);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__categorias__ = __webpack_require__(695);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HomeModule", function() { return HomeModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_ionic_angular_module__ = __webpack_require__(352);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__home__ = __webpack_require__(696);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -18,35 +18,30 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var CategoriasPageModule = /** @class */ (function () {
-    function CategoriasPageModule() {
+var HomeModule = /** @class */ (function () {
+    function HomeModule() {
     }
-    CategoriasPageModule = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
-            declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__categorias__["a" /* CategoriasPage */],
-            ],
-            imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__categorias__["a" /* CategoriasPage */]),
-            ],
+    HomeModule = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["NgModule"])({
+            declarations: [__WEBPACK_IMPORTED_MODULE_2__home__["a" /* HomePage */]],
+            imports: [__WEBPACK_IMPORTED_MODULE_0_ionic_angular_module__["b" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__home__["a" /* HomePage */])]
         })
-    ], CategoriasPageModule);
-    return CategoriasPageModule;
+    ], HomeModule);
+    return HomeModule;
 }());
 
-//# sourceMappingURL=categorias.module.js.map
+//# sourceMappingURL=home.module.js.map
 
 /***/ }),
 
-/***/ 695:
+/***/ 696:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CategoriasPage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HomePage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(87);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__config_api_config__ = __webpack_require__(45);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_domain_categoria_service__ = __webpack_require__(352);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_auth_service__ = __webpack_require__(153);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -59,61 +54,83 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-
-var CategoriasPage = /** @class */ (function () {
-    function CategoriasPage(navCtrl, navParams, categoriaService) {
+/**
+ * Pagina controladora da home.html
+ * OBS : Toda pagina HTML tem uma pagina controladora correspondente
+ */
+// Permite referenciar esta classe pelo nome dela atravez de String 'HomePage' flexibilizando o uso do lazy mode (CAREEGAMENTO TARDIO)
+var HomePage = /** @class */ (function () {
+    /**Para declarar injeção de dependencia em uma classe
+     * basta declarar o objeto como parametro no construtor
+     *
+     * navCtrl: NavController -> injeção do objeto que controla a navegação entre as paginas
+     * menu: MenuController -> Injeção do objeto que controla o menu da aplicação
+     * auth: AuthService -> injeção do objeto que conbtrola a autenticação
+     */
+    function HomePage(navCtrl, menu, auth) {
         this.navCtrl = navCtrl;
-        this.navParams = navParams;
-        this.categoriaService = categoriaService;
-        this.bucketUrl = __WEBPACK_IMPORTED_MODULE_2__config_api_config__["a" /* API_CONFIG */].bucketBaseUrl; // Variavel que recebe bucketBaseUrl criado no API_CONFIG
+        this.menu = menu;
+        this.auth = auth;
+        /**Sera feito o binding desse objeto, ou seja sera capturado os dados da tela de login */
+        this.creds = {
+            email: "",
+            senha: ""
+        };
     }
     /**
-     * A Chamada do metodo por padrão é assincrona, é preciso se inscrever para fazer algo quando a resposta chegar.
-     * subscribe() -> Assim vc se inscreve(FUNÇÃO CALLBACK).
-     * Dentro dele se coloca uma função para executar a resposta
-     *
-     * Função anonima(Arrow function) -> Função dentro de uma função, pode ter mais de uma função,
-     * que pode receber mais de um argumento,
-     * nesse caso so recebe o response que o console.log() pega e mostra no Navegador
-     * subscribe(response =>{
-     * console.log(response)
-     * }
-     * E em caso de erro sera chamada a outra funcão
-     *  error => {
-        console.log(error);
-      }
+     * Método que desabilita o menu ao entrar na pagina de login
      */
-    CategoriasPage.prototype.ionViewDidLoad = function () {
-        var _this = this;
-        this.categoriaService.findAll().subscribe(function (response) {
-            _this.items = response; // A variavel items recebe a resposta
-            //console.log(response);
-        }, 
-        /**
-         * A responsabilidade de mostrar o erro no console esta sendo do inteceptor.
-         * É necessario ter error => {}); para que o erro não ocorra aqui, ja que o interceptor propaga o erro
-         */
-        function (error) { }); // Se for necessario fazer algo a mais do que imprimir na tela, sera feito aqui
+    HomePage.prototype.ionViewWillEnter = function () {
+        this.menu.swipeEnable(false);
     };
     /**
-     * Fazendo navegação passando parametros de uma pagina para outra.
-     * categoria_id -> Nome do atributo e o valor do atributo e o categoria_id que esta chegando como parametro no método
+     * Método que habilita o menu ao sair da pagina de login
      */
-    CategoriasPage.prototype.showProdutos = function (categoria_id) {
-        this.navCtrl.push('ProdutosPage', { categoria_id: categoria_id });
+    HomePage.prototype.ionViewDidLeave = function () {
+        this.menu.swipeEnable(true);
     };
-    CategoriasPage = __decorate([
+    /**
+     * Método de ciclo de vida do token que permite o usuario entrar no app sem logar caso o token ainda esteja valido
+     */
+    HomePage.prototype.ionViewDidEnter = function () {
+        var _this = this;
+        this.auth.refreshToken().subscribe(function (response) {
+            _this.auth.successfulLogin(response.headers.get('Authorization'));
+            _this.navCtrl.setRoot('CategoriasPage');
+        }, function (error) { });
+    };
+    /**
+     * Metodo que faz a navegação da pagina homePage para CategoriasPage
+     *
+     * this.navCtrl -> Para acessar qualquer elemento de uma classe e necessario chamar o this. antes
+     * push() -> Método que chama outra pagina -- Empilha uma pagina em cima da outra
+     */
+    HomePage.prototype.login = function () {
+        var _this = this;
+        this.auth.authenticate(this.creds).subscribe(function (response) {
+            _this.auth.successfulLogin(response.headers.get('Authorization'));
+            //console.log(response.headers.get('Authorization')); // Confirma se o cabeçalho veio na resposta
+            _this.navCtrl.setRoot('CategoriasPage'); // Navegação sem empilhamento
+            // this.navCtrl.push('CategoriasPage'); // Navegação com empilhamento
+        }, function (error) { });
+        //console.log(this.creds);
+    };
+    HomePage.prototype.signup = function () {
+        // push() -> metodo que empilha a pagina e possui o botao de voltar
+        this.navCtrl.push('SignupPage');
+    };
+    HomePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-            selector: 'page-categorias',template:/*ion-inline-start:"C:\workspace ionic\ionic-spring-frontend\src\pages\categorias\categorias.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle> <!--Colocando botão iniciar na pagina inicial -->\n       <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Categorias</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n\n  <!--Botão flutante do carrinho de compras. navPush="CartPage"-> Navega para a pagina de carrinho -->\n  <ion-fab top right edge>\n    <button navPush="CartPage" ion-fab mini><ion-icon name="cart"></ion-icon></button>\n  </ion-fab>\n\n  <ion-list>\n<!-- button ion-item -> Todo item fica clicavel -- Diretiva do Angular *ngFor = lê uma coleção e repetir o \n  numero de vezes da coleção. \n  *ngFor="let item of items" = Diretiva que percorre a lista de items( VARIAVEL CRIADA NO CONTROLADOR ) \n  e cada elemento recebe o apelido de item.  (click)="showProdutos()-> binding de produtos que pega o id da categoria selecionada, apertou na categoria exibe os produtos -->\n    <button ion-item *ngFor="let item of items" (click)="showProdutos(item.id)">\n      <ion-thumbnail item-start>\n        <!-- {{}} INTERPOLAÇÃO bucketUrl(variavel criada no controlador) com concatenação /cat que referencia o \n          nome das imagens de categoria e busca o id de cada uma das imagens -->\n        <img src="{{bucketUrl}}/cat{{item.id}}.jpg" alt=""> \n      </ion-thumbnail>  \n      <!-- {{}} INTERPOLAÇÃO = Interpola o conteudo do HTML com o DADO que veio do controlador  -->\n        <h2>{{ item.nome }}</h2> \n    </button>\n\n  </ion-list>\n\n</ion-content>\n'/*ion-inline-end:"C:\workspace ionic\ionic-spring-frontend\src\pages\categorias\categorias.html"*/,
+            selector: 'page-home',template:/*ion-inline-start:"C:\workspace ionic\ionic-spring-frontend\src\pages\home\home.html"*/'<!-- PRIMEIRA PAGINA, PAGINA INICIAL DE LOGIN OU REGISTRO-->\n<ion-content padding>\n\n  <h3>Sistema de pedidos</h3>\n\n  <img src="assets/imgs/logo3.png" alt="logo">\n\n  <form action="">\n    <ion-item>\n      <ion-label stacked>Email</ion-label>\n      <!-- Binding de atributo de elemento HTML [] com o de evento () -->\n      <ion-input [(ngModel)]="creds.email" name="email" type="text"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label stacked>Senha</ion-label>\n      <ion-input [(ngModel)]="creds.senha" name="senha" type="password"></ion-input>\n    </ion-item>\n    <!-- (click)="login()" -> Método login associado ao click do botão -->\n    <button ion-button block (click)="login()">Entrar</button> \n  </form>\n  <button ion-button block outline (click)="signup()">Registrar</button>\n\n\n</ion-content>'/*ion-inline-end:"C:\workspace ionic\ionic-spring-frontend\src\pages\home\home.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */],
-            __WEBPACK_IMPORTED_MODULE_3__services_domain_categoria_service__["a" /* CategoriaService */]])
-    ], CategoriasPage);
-    return CategoriasPage;
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* MenuController */],
+            __WEBPACK_IMPORTED_MODULE_2__services_auth_service__["a" /* AuthService */]])
+    ], HomePage);
+    return HomePage;
 }());
 
-//# sourceMappingURL=categorias.js.map
+//# sourceMappingURL=home.js.map
 
 /***/ })
 

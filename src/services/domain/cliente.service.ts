@@ -35,6 +35,12 @@ export class ClienteService {
     }
 
 
+    // Busca um cliente pelo ID
+    findById(id: string) {
+        return this.http.get(`${API_CONFIG.baseUrl}/clientes/${id}`);
+    }
+
+
     /**
      * Metodo que busca a imagem do Usuario no bucket da amazon.
      * Recebe um Id, Observable<any> -> any e um tipo do typeScript que aceita qq coisa(casa com todo mundo).

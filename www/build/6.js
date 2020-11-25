@@ -5,10 +5,10 @@ webpackJsonp([6],{
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HomeModule", function() { return HomeModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_ionic_angular_module__ = __webpack_require__(353);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__home__ = __webpack_require__(696);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OrderConfirmationPageModule", function() { return OrderConfirmationPageModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(87);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__order_confirmation__ = __webpack_require__(697);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -18,30 +18,35 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var HomeModule = /** @class */ (function () {
-    function HomeModule() {
+var OrderConfirmationPageModule = /** @class */ (function () {
+    function OrderConfirmationPageModule() {
     }
-    HomeModule = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["NgModule"])({
-            declarations: [__WEBPACK_IMPORTED_MODULE_2__home__["a" /* HomePage */]],
-            imports: [__WEBPACK_IMPORTED_MODULE_0_ionic_angular_module__["b" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__home__["a" /* HomePage */])]
+    OrderConfirmationPageModule = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+            declarations: [
+                __WEBPACK_IMPORTED_MODULE_2__order_confirmation__["a" /* OrderConfirmationPage */],
+            ],
+            imports: [
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__order_confirmation__["a" /* OrderConfirmationPage */]),
+            ],
         })
-    ], HomeModule);
-    return HomeModule;
+    ], OrderConfirmationPageModule);
+    return OrderConfirmationPageModule;
 }());
 
-//# sourceMappingURL=home.module.js.map
+//# sourceMappingURL=order-confirmation.module.js.map
 
 /***/ }),
 
-/***/ 696:
+/***/ 697:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HomePage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return OrderConfirmationPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(87);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_auth_service__ = __webpack_require__(153);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_domain_cliente_service__ = __webpack_require__(350);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_domain_cart_service__ = __webpack_require__(152);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -54,83 +59,54 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-/**
- * Pagina controladora da home.html
- * OBS : Toda pagina HTML tem uma pagina controladora correspondente
- */
-// Permite referenciar esta classe pelo nome dela atravez de String 'HomePage' flexibilizando o uso do lazy mode (CAREEGAMENTO TARDIO)
-var HomePage = /** @class */ (function () {
-    /**Para declarar injeção de dependencia em uma classe
-     * basta declarar o objeto como parametro no construtor
-     *
-     * navCtrl: NavController -> injeção do objeto que controla a navegação entre as paginas
-     * menu: MenuController -> Injeção do objeto que controla o menu da aplicação
-     * auth: AuthService -> injeção do objeto que conbtrola a autenticação
-     */
-    function HomePage(navCtrl, menu, auth) {
+
+var OrderConfirmationPage = /** @class */ (function () {
+    function OrderConfirmationPage(navCtrl, navParams, clienteService, cartService) {
         this.navCtrl = navCtrl;
-        this.menu = menu;
-        this.auth = auth;
-        /**Sera feito o binding desse objeto, ou seja sera capturado os dados da tela de login */
-        this.creds = {
-            email: "",
-            senha: ""
-        };
+        this.navParams = navParams;
+        this.clienteService = clienteService;
+        this.cartService = cartService;
+        // Carregando o pedido no construtor - Passa o pedido como parametro de uma pagina para outra  
+        this.pedido = this.navParams.get('pedido');
     }
-    /**
-     * Método que desabilita o menu ao entrar na pagina de login
-     */
-    HomePage.prototype.ionViewWillEnter = function () {
-        this.menu.swipeEnable(false);
-    };
-    /**
-     * Método que habilita o menu ao sair da pagina de login
-     */
-    HomePage.prototype.ionViewDidLeave = function () {
-        this.menu.swipeEnable(true);
-    };
-    /**
-     * Método de ciclo de vida do token que permite o usuario entrar no app sem logar caso o token ainda esteja valido
-     */
-    HomePage.prototype.ionViewDidEnter = function () {
+    OrderConfirmationPage.prototype.ionViewDidLoad = function () {
         var _this = this;
-        this.auth.refreshToken().subscribe(function (response) {
-            _this.auth.successfulLogin(response.headers.get('Authorization'));
-            _this.navCtrl.setRoot('CategoriasPage');
-        }, function (error) { });
+        this.cartItems = this.cartService.getCart().items; // Carrega os itens do carrinho
+        this.clienteService.findById(this.pedido.cliente.id) // Busca o id do cliente que esta no objeto pedido
+            .subscribe(function (response) {
+            _this.cliente = response;
+            // No objeto de pedido tem somente o id, para pegar os dados e chamada a funcao que busca os endereços atraves do id do endereço de entrega na lista dos endereços do cliente
+            _this.endereco = _this.findEndereco(_this.pedido.enderecoDeEntrega.id, response['enderecos']);
+        }, function (error) {
+            _this.navCtrl.setRoot('HomePage'); // se acontecer algum erro e redirecionado para pagina inicial
+        });
     };
     /**
-     * Metodo que faz a navegação da pagina homePage para CategoriasPage
-     *
-     * this.navCtrl -> Para acessar qualquer elemento de uma classe e necessario chamar o this. antes
-     * push() -> Método que chama outra pagina -- Empilha uma pagina em cima da outra
+     * Função que procura os endereços
+     * @param id
+     * @param list
      */
-    HomePage.prototype.login = function () {
-        var _this = this;
-        this.auth.authenticate(this.creds).subscribe(function (response) {
-            _this.auth.successfulLogin(response.headers.get('Authorization'));
-            //console.log(response.headers.get('Authorization')); // Confirma se o cabeçalho veio na resposta
-            _this.navCtrl.setRoot('CategoriasPage'); // Navegação sem empilhamento
-            // this.navCtrl.push('CategoriasPage'); // Navegação com empilhamento
-        }, function (error) { });
-        //console.log(this.creds);
+    OrderConfirmationPage.prototype.findEndereco = function (id, list) {
+        var position = list.findIndex(function (x) { return x.id == id; }); // Encontra a posição do objeto x tal que x.id seja igual ao id passado por parametro
+        return list[position];
     };
-    HomePage.prototype.signup = function () {
-        // push() -> metodo que empilha a pagina e possui o botao de voltar
-        this.navCtrl.push('SignupPage');
+    // Mostra o valor total do pedido
+    OrderConfirmationPage.prototype.total = function () {
+        return this.cartService.total();
     };
-    HomePage = __decorate([
+    OrderConfirmationPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-            selector: 'page-home',template:/*ion-inline-start:"C:\workspace ionic\ionic-spring-frontend\src\pages\home\home.html"*/'<!-- PRIMEIRA PAGINA, PAGINA INICIAL DE LOGIN OU REGISTRO-->\n<ion-content padding>\n\n  <h3>Sistema de pedidos</h3>\n\n  <img src="assets/imgs/logo3.png" alt="logo">\n\n  <form action="">\n    <ion-item>\n      <ion-label stacked>Email</ion-label>\n      <!-- Binding de atributo de elemento HTML [] com o de evento () -->\n      <ion-input [(ngModel)]="creds.email" name="email" type="text"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label stacked>Senha</ion-label>\n      <ion-input [(ngModel)]="creds.senha" name="senha" type="password"></ion-input>\n    </ion-item>\n    <!-- (click)="login()" -> Método login associado ao click do botão -->\n    <button ion-button block (click)="login()">Entrar</button> \n  </form>\n  <button ion-button block outline (click)="signup()">Registrar</button>\n\n\n</ion-content>'/*ion-inline-end:"C:\workspace ionic\ionic-spring-frontend\src\pages\home\home.html"*/
+            selector: 'page-order-confirmation',template:/*ion-inline-start:"C:\workspace ionic\ionic-spring-frontend\src\pages\order-confirmation\order-confirmation.html"*/'<!--Tela de confirmação de pedido-->\n<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Confira seu pedido</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n\n  <ion-card>\n    <ion-card-header>\n      Itens do pedido\n    </ion-card-header>\n\n    <ion-list>\n      <ion-item *ngFor="let item of cartItems">\n        <ion-thumbnail item-start>\n          <img [src]="item.produto.imageUrl || \'assets/imgs/prod.jpg\'">\n        </ion-thumbnail>\n        <h2>{{item.produto.nome}}</h2>\n        <p>{{item.produto.preco | currency}}</p>\n        <p class="nolinebreak">{{item.quantidade}}</p>\n        <p item-end>{{item.produto.preco * item.quantidade | currency}}</p>\n      </ion-item> \n\n      <ion-item>\n        <h2>Total</h2>\n        <h2 item-end>{{total() | currency}}</h2>\n      </ion-item>\n    </ion-list> \n  </ion-card>\n\n  <ion-card>\n      <ion-card-header>\n        Cliente\n      </ion-card-header>\n      <ion-item>\n        <h2>{{cliente?.nome}}</h2>\n        <p>{{cliente?.email}}</p>\n      </ion-item>\n  </ion-card>\n\n  <ion-card>\n    <ion-card-header>\n      Endereço de entrega\n    </ion-card-header>\n\n    <ion-item>\n      <h2>{{endereco?.logradouro}}, {{endereco?.numero}}</h2>\n      <p>{{endereco?.complemento}} {{endereco?.bairro}} CEP {{endereco?.cep}}</p>\n      <p>{{endereco?.cidade.nome}}, {{endereco?.cidade.estado.nome}}</p>\n    </ion-item>\n  </ion-card>\n\n  <ion-card>\n    <ion-card-header>\n      Pagamento\n    </ion-card-header>\n\n    <ion-item *ngIf="pedido.pagamento[\'@type\']==\'pagamentoComCartao\'">\n      <h3>Pagamento com cartão</h3>\n      <p>Parcelas: {{pedido.pagamento.numeroDeParcelas}}</p>\n    </ion-item>\n    <ion-item *ngIf="pedido.pagamento[\'@type\']==\'pagamentoComBoleto\'">\n      <h3>Pagamento com boleto</h3>\n    </ion-item>\n  </ion-card>\n</ion-content>\n'/*ion-inline-end:"C:\workspace ionic\ionic-spring-frontend\src\pages\order-confirmation\order-confirmation.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* MenuController */],
-            __WEBPACK_IMPORTED_MODULE_2__services_auth_service__["a" /* AuthService */]])
-    ], HomePage);
-    return HomePage;
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */],
+            __WEBPACK_IMPORTED_MODULE_2__services_domain_cliente_service__["a" /* ClienteService */],
+            __WEBPACK_IMPORTED_MODULE_3__services_domain_cart_service__["a" /* CartService */]])
+    ], OrderConfirmationPage);
+    return OrderConfirmationPage;
 }());
 
-//# sourceMappingURL=home.js.map
+//# sourceMappingURL=order-confirmation.js.map
 
 /***/ })
 

@@ -1,4 +1,4 @@
-webpackJsonp([9],{
+webpackJsonp([10],{
 
 /***/ 152:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -246,38 +246,42 @@ webpackEmptyAsyncContext.id = 164;
 var map = {
 	"../pages/cart/cart.module": [
 		683,
-		8
+		9
 	],
 	"../pages/categorias/categorias.module": [
+		686,
+		8
+	],
+	"../pages/home/home.module": [
 		684,
 		7
 	],
-	"../pages/home/home.module": [
+	"../pages/order-confirmation/order-confirmation.module": [
 		685,
 		6
 	],
 	"../pages/payment/payment.module": [
-		686,
+		687,
 		5
 	],
 	"../pages/pick-address/pick-address.module": [
-		687,
+		688,
 		4
 	],
 	"../pages/produto-detail/produto-detail.module": [
-		688,
+		689,
 		3
 	],
 	"../pages/produtos/produtos.module": [
-		689,
+		690,
 		2
 	],
 	"../pages/profile/profile.module": [
-		690,
+		691,
 		1
 	],
 	"../pages/signup/signup.module": [
-		691,
+		692,
 		0
 	]
 };
@@ -298,6 +302,84 @@ module.exports = webpackAsyncContext;
 /***/ }),
 
 /***/ 350:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ClienteService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__config_api_config__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__storage_service__ = __webpack_require__(43);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var ClienteService = /** @class */ (function () {
+    function ClienteService(http, storage) {
+        this.http = http;
+        this.storage = storage;
+    }
+    /**
+     * Método que busca um usuario por email pogando por parametro o email digitado pelo usuario.
+     *
+     * Observable<ClienteDTO> -> A tipagem do metodo esta sendo retirada -> <ClienteDTO>
+     * COM ISSO SERA RETORNADO EXTAMANETO O OBJETO QUE VEM DO BACKEND
+     * @param email
+     */
+    ClienteService.prototype.findByEmail = function (email) {
+        // let token = this.storage.getLocalUser().token; // let token -> variavel temporaria
+        // Cabeçalho que sera enviado
+        // let authHeader = new HttpHeaders({'Authorization': 'Bearer ' + token});
+        return this.http.get /*<ClienteDTO>*/(__WEBPACK_IMPORTED_MODULE_2__config_api_config__["a" /* API_CONFIG */].baseUrl + "/clientes/email?value=" + email);
+        // {'headers': authHeader}); //passa o cabeçalho para a requisição
+    };
+    // Busca um cliente pelo ID
+    ClienteService.prototype.findById = function (id) {
+        return this.http.get(__WEBPACK_IMPORTED_MODULE_2__config_api_config__["a" /* API_CONFIG */].baseUrl + "/clientes/" + id);
+    };
+    /**
+     * Metodo que busca a imagem do Usuario no bucket da amazon.
+     * Recebe um Id, Observable<any> -> any e um tipo do typeScript que aceita qq coisa(casa com todo mundo).
+     * cp${id} -> cp e o prefixo da imagem e id do cliente
+     * {responseType : 'blob'} -> resposta blob, é uma imagem e não um JSON
+     * @param id
+     */
+    ClienteService.prototype.getImageFromBucket = function (id) {
+        var url = __WEBPACK_IMPORTED_MODULE_2__config_api_config__["a" /* API_CONFIG */].bucketBaseUrl + "/cp" + id + ".jpg";
+        return this.http.get(url, { responseType: 'blob' });
+    };
+    /**
+     * Método para inserir cliente
+     * @param obj
+     */
+    ClienteService.prototype.insert = function (obj) {
+        return this.http.post(__WEBPACK_IMPORTED_MODULE_2__config_api_config__["a" /* API_CONFIG */].baseUrl + "/clientes", obj, {
+            observe: 'response',
+            responseType: 'text' // Como o corpo vem vazio isso evita o erro de parse do JSON
+        });
+    };
+    ClienteService = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["Injectable"])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_common_http__["b" /* HttpClient */],
+            __WEBPACK_IMPORTED_MODULE_3__storage_service__["a" /* StorageService */]])
+    ], ClienteService);
+    return ClienteService;
+}());
+
+//# sourceMappingURL=cliente.service.js.map
+
+/***/ }),
+
+/***/ 351:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -356,81 +438,7 @@ var ProdutoService = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 351:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ClienteService; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(38);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__config_api_config__ = __webpack_require__(45);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__storage_service__ = __webpack_require__(43);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-var ClienteService = /** @class */ (function () {
-    function ClienteService(http, storage) {
-        this.http = http;
-        this.storage = storage;
-    }
-    /**
-     * Método que busca um usuario por email pogando por parametro o email digitado pelo usuario.
-     *
-     * Observable<ClienteDTO> -> A tipagem do metodo esta sendo retirada -> <ClienteDTO>
-     * COM ISSO SERA RETORNADO EXTAMANETO O OBJETO QUE VEM DO BACKEND
-     * @param email
-     */
-    ClienteService.prototype.findByEmail = function (email) {
-        // let token = this.storage.getLocalUser().token; // let token -> variavel temporaria
-        // Cabeçalho que sera enviado
-        // let authHeader = new HttpHeaders({'Authorization': 'Bearer ' + token});
-        return this.http.get /*<ClienteDTO>*/(__WEBPACK_IMPORTED_MODULE_2__config_api_config__["a" /* API_CONFIG */].baseUrl + "/clientes/email?value=" + email);
-        // {'headers': authHeader}); //passa o cabeçalho para a requisição
-    };
-    /**
-     * Metodo que busca a imagem do Usuario no bucket da amazon.
-     * Recebe um Id, Observable<any> -> any e um tipo do typeScript que aceita qq coisa(casa com todo mundo).
-     * cp${id} -> cp e o prefixo da imagem e id do cliente
-     * {responseType : 'blob'} -> resposta blob, é uma imagem e não um JSON
-     * @param id
-     */
-    ClienteService.prototype.getImageFromBucket = function (id) {
-        var url = __WEBPACK_IMPORTED_MODULE_2__config_api_config__["a" /* API_CONFIG */].bucketBaseUrl + "/cp" + id + ".jpg";
-        return this.http.get(url, { responseType: 'blob' });
-    };
-    /**
-     * Método para inserir cliente
-     * @param obj
-     */
-    ClienteService.prototype.insert = function (obj) {
-        return this.http.post(__WEBPACK_IMPORTED_MODULE_2__config_api_config__["a" /* API_CONFIG */].baseUrl + "/clientes", obj, {
-            observe: 'response',
-            responseType: 'text' // Como o corpo vem vazio isso evita o erro de parse do JSON
-        });
-    };
-    ClienteService = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["Injectable"])(),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_common_http__["b" /* HttpClient */],
-            __WEBPACK_IMPORTED_MODULE_3__storage_service__["a" /* StorageService */]])
-    ], ClienteService);
-    return ClienteService;
-}());
-
-//# sourceMappingURL=cliente.service.js.map
-
-/***/ }),
-
-/***/ 352:
+/***/ 353:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -506,13 +514,13 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_component__ = __webpack_require__(677);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_status_bar__ = __webpack_require__(346);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_native_splash_screen__ = __webpack_require__(349);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__services_domain_categoria_service__ = __webpack_require__(352);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__services_domain_categoria_service__ = __webpack_require__(353);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__interceptors_error_interceptor__ = __webpack_require__(681);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__services_auth_service__ = __webpack_require__(153);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__services_storage_service__ = __webpack_require__(43);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__services_domain_cliente_service__ = __webpack_require__(351);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__services_domain_cliente_service__ = __webpack_require__(350);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__interceptors_auth_interceptor__ = __webpack_require__(682);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__services_domain_produto_service__ = __webpack_require__(350);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__services_domain_produto_service__ = __webpack_require__(351);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__services_domain_cart_service__ = __webpack_require__(152);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -558,8 +566,9 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["d" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_4__app_component__["a" /* MyApp */], {}, {
                     links: [
                         { loadChildren: '../pages/cart/cart.module#CartPageModule', name: 'CartPage', segment: 'cart', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/categorias/categorias.module#CategoriasPageModule', name: 'CategoriasPage', segment: 'categorias', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/home/home.module#HomeModule', name: 'HomePage', segment: 'home', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/order-confirmation/order-confirmation.module#OrderConfirmationPageModule', name: 'OrderConfirmationPage', segment: 'order-confirmation', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/categorias/categorias.module#CategoriasPageModule', name: 'CategoriasPage', segment: 'categorias', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/payment/payment.module#PaymentPageModule', name: 'PaymentPage', segment: 'payment', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/pick-address/pick-address.module#PickAddressPageModule', name: 'PickAddressPage', segment: 'pick-address', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/produto-detail/produto-detail.module#ProdutoDetailPageModule', name: 'ProdutoDetailPage', segment: 'produto-detail', priority: 'low', defaultHistory: [] },
