@@ -1,14 +1,14 @@
 webpackJsonp([4],{
 
-/***/ 686:
+/***/ 685:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HomeModule", function() { return HomeModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_ionic_angular_module__ = __webpack_require__(353);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__home__ = __webpack_require__(695);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PickAddressPageModule", function() { return PickAddressPageModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(87);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pick_address__ = __webpack_require__(695);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -18,19 +18,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var HomeModule = /** @class */ (function () {
-    function HomeModule() {
+var PickAddressPageModule = /** @class */ (function () {
+    function PickAddressPageModule() {
     }
-    HomeModule = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["NgModule"])({
-            declarations: [__WEBPACK_IMPORTED_MODULE_2__home__["a" /* HomePage */]],
-            imports: [__WEBPACK_IMPORTED_MODULE_0_ionic_angular_module__["b" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__home__["a" /* HomePage */])]
+    PickAddressPageModule = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+            declarations: [
+                __WEBPACK_IMPORTED_MODULE_2__pick_address__["a" /* PickAddressPage */],
+            ],
+            imports: [
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__pick_address__["a" /* PickAddressPage */]),
+            ],
         })
-    ], HomeModule);
-    return HomeModule;
+    ], PickAddressPageModule);
+    return PickAddressPageModule;
 }());
 
-//# sourceMappingURL=home.module.js.map
+//# sourceMappingURL=pick-address.module.js.map
 
 /***/ }),
 
@@ -38,10 +42,9 @@ var HomeModule = /** @class */ (function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HomePage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PickAddressPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(87);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_auth_service__ = __webpack_require__(153);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -53,84 +56,57 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
-
-/**
- * Pagina controladora da home.html
- * OBS : Toda pagina HTML tem uma pagina controladora correspondente
- */
-// Permite referenciar esta classe pelo nome dela atravez de String 'HomePage' flexibilizando o uso do lazy mode (CAREEGAMENTO TARDIO)
-var HomePage = /** @class */ (function () {
-    /**Para declarar injeção de dependencia em uma classe
-     * basta declarar o objeto como parametro no construtor
-     *
-     * navCtrl: NavController -> injeção do objeto que controla a navegação entre as paginas
-     * menu: MenuController -> Injeção do objeto que controla o menu da aplicação
-     * auth: AuthService -> injeção do objeto que conbtrola a autenticação
-     */
-    function HomePage(navCtrl, menu, auth) {
+var PickAddressPage = /** @class */ (function () {
+    function PickAddressPage(navCtrl, navParams) {
         this.navCtrl = navCtrl;
-        this.menu = menu;
-        this.auth = auth;
-        /**Sera feito o binding desse objeto, ou seja sera capturado os dados da tela de login */
-        this.creds = {
-            email: "",
-            senha: ""
-        };
+        this.navParams = navParams;
     }
-    /**
-     * Método que desabilita o menu ao entrar na pagina de login
-     */
-    HomePage.prototype.ionViewWillEnter = function () {
-        this.menu.swipeEnable(false);
+    PickAddressPage.prototype.ionViewDidLoad = function () {
+        this.items = [
+            {
+                id: "1",
+                logradouro: "Rua Quinze de Novembro",
+                numero: "300",
+                complemento: "Apto 200",
+                bairro: "Santa Mônica",
+                cep: "48293822",
+                cidade: {
+                    id: "1",
+                    nome: "Uberlândia",
+                    estado: {
+                        id: "1",
+                        nome: "Minas Gerais"
+                    }
+                }
+            },
+            {
+                id: "2",
+                logradouro: "Rua Alexandre Toledo da Silva",
+                numero: "405",
+                complemento: null,
+                bairro: "Centro",
+                cep: "88933822",
+                cidade: {
+                    id: "3",
+                    nome: "São Paulo",
+                    estado: {
+                        id: "2",
+                        nome: "São Paulo"
+                    }
+                }
+            }
+        ];
     };
-    /**
-     * Método que habilita o menu ao sair da pagina de login
-     */
-    HomePage.prototype.ionViewDidLeave = function () {
-        this.menu.swipeEnable(true);
-    };
-    /**
-     * Método de ciclo de vida do token que permite o usuario entrar no app sem logar caso o token ainda esteja valido
-     */
-    HomePage.prototype.ionViewDidEnter = function () {
-        var _this = this;
-        this.auth.refreshToken().subscribe(function (response) {
-            _this.auth.successfulLogin(response.headers.get('Authorization'));
-            _this.navCtrl.setRoot('CategoriasPage');
-        }, function (error) { });
-    };
-    /**
-     * Metodo que faz a navegação da pagina homePage para CategoriasPage
-     *
-     * this.navCtrl -> Para acessar qualquer elemento de uma classe e necessario chamar o this. antes
-     * push() -> Método que chama outra pagina -- Empilha uma pagina em cima da outra
-     */
-    HomePage.prototype.login = function () {
-        var _this = this;
-        this.auth.authenticate(this.creds).subscribe(function (response) {
-            _this.auth.successfulLogin(response.headers.get('Authorization'));
-            //console.log(response.headers.get('Authorization')); // Confirma se o cabeçalho veio na resposta
-            _this.navCtrl.setRoot('CategoriasPage'); // Navegação sem empilhamento
-            // this.navCtrl.push('CategoriasPage'); // Navegação com empilhamento
-        }, function (error) { });
-        //console.log(this.creds);
-    };
-    HomePage.prototype.signup = function () {
-        // push() -> metodo que empilha a pagina e possui o botao de voltar
-        this.navCtrl.push('SignupPage');
-    };
-    HomePage = __decorate([
+    PickAddressPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-            selector: 'page-home',template:/*ion-inline-start:"C:\workspace ionic\ionic-spring-frontend\src\pages\home\home.html"*/'<!-- PRIMEIRA PAGINA, PAGINA INICIAL DE LOGIN OU REGISTRO-->\n<ion-content padding>\n\n  <h3>Sistema de pedidos</h3>\n\n  <img src="assets/imgs/logo3.png" alt="logo">\n\n  <form action="">\n    <ion-item>\n      <ion-label stacked>Email</ion-label>\n      <!-- Binding de atributo de elemento HTML [] com o de evento () -->\n      <ion-input [(ngModel)]="creds.email" name="email" type="text"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label stacked>Senha</ion-label>\n      <ion-input [(ngModel)]="creds.senha" name="senha" type="password"></ion-input>\n    </ion-item>\n    <!-- (click)="login()" -> Método login associado ao click do botão -->\n    <button ion-button block (click)="login()">Entrar</button> \n  </form>\n  <button ion-button block outline (click)="signup()">Registrar</button>\n\n\n</ion-content>'/*ion-inline-end:"C:\workspace ionic\ionic-spring-frontend\src\pages\home\home.html"*/
+            selector: 'page-pick-address',template:/*ion-inline-start:"C:\workspace ionic\ionic-spring-frontend\src\pages\pick-address\pick-address.html"*/'\n<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Fechamento de pedido</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n    <ion-list>\n        <ion-list-header>\n          Selecione um endereço\n        </ion-list-header>\n        <button ion-item *ngFor="let item of items">\n            <h2>{{item.logradouro}}, {{item.numero}}</h2>\n            <p>{{item.complemento}} {{item.bairro}} CEP {{item.cep}}</p>\n            <p>{{item.cidade.nome}}, {{item.cidade.estado.nome}}</p>\n        </button>\n      </ion-list>\n</ion-content>'/*ion-inline-end:"C:\workspace ionic\ionic-spring-frontend\src\pages\pick-address\pick-address.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* MenuController */],
-            __WEBPACK_IMPORTED_MODULE_2__services_auth_service__["a" /* AuthService */]])
-    ], HomePage);
-    return HomePage;
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]])
+    ], PickAddressPage);
+    return PickAddressPage;
 }());
 
-//# sourceMappingURL=home.js.map
+//# sourceMappingURL=pick-address.js.map
 
 /***/ })
 
