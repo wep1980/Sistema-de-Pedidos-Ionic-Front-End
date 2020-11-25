@@ -81,8 +81,13 @@ else{
   }
 
 
+  /**
+   * Metodo que redireciona a pagina depois de ter selecionado o endereço passando como parametro o objeto pedido
+   * @param item 
+   */
   nextPage(item: EnderecoDTO){
      this.pedido.enderecoDeEntrega = {id: item.id};
-     console.log(this.pedido);
+     //console.log(this.pedido);
+     this.navCtrl.push('PaymentPage', {pedido : this.pedido});
   }
 }

@@ -23,5 +23,5 @@
 
 export interface PagamentoDTO {
     numeroDeParcelas : number;
-    "@Type" : string; // É necessario colocar o nome da variavel entre "" pq não e permitido o nome de atributos começando com @
+    "@type" : string; // É necessario colocar o nome da variavel entre "" pq não e permitido o nome de atributos começando com @
 }

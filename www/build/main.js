@@ -1,4 +1,4 @@
-webpackJsonp([8],{
+webpackJsonp([9],{
 
 /***/ 152:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -246,22 +246,26 @@ webpackEmptyAsyncContext.id = 164;
 var map = {
 	"../pages/cart/cart.module": [
 		683,
-		7
+		8
 	],
 	"../pages/categorias/categorias.module": [
 		684,
-		6
+		7
 	],
 	"../pages/home/home.module": [
+		685,
+		6
+	],
+	"../pages/payment/payment.module": [
 		686,
 		5
 	],
 	"../pages/pick-address/pick-address.module": [
-		685,
+		687,
 		4
 	],
 	"../pages/produto-detail/produto-detail.module": [
-		687,
+		688,
 		3
 	],
 	"../pages/produtos/produtos.module": [
@@ -269,11 +273,11 @@ var map = {
 		2
 	],
 	"../pages/profile/profile.module": [
-		688,
+		690,
 		1
 	],
 	"../pages/signup/signup.module": [
-		690,
+		691,
 		0
 	]
 };
@@ -555,11 +559,12 @@ var AppModule = /** @class */ (function () {
                     links: [
                         { loadChildren: '../pages/cart/cart.module#CartPageModule', name: 'CartPage', segment: 'cart', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/categorias/categorias.module#CategoriasPageModule', name: 'CategoriasPage', segment: 'categorias', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/pick-address/pick-address.module#PickAddressPageModule', name: 'PickAddressPage', segment: 'pick-address', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/home/home.module#HomeModule', name: 'HomePage', segment: 'home', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/payment/payment.module#PaymentPageModule', name: 'PaymentPage', segment: 'payment', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/pick-address/pick-address.module#PickAddressPageModule', name: 'PickAddressPage', segment: 'pick-address', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/produto-detail/produto-detail.module#ProdutoDetailPageModule', name: 'ProdutoDetailPage', segment: 'produto-detail', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/profile/profile.module#ProfilePageModule', name: 'ProfilePage', segment: 'profile', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/produtos/produtos.module#ProdutosPageModule', name: 'ProdutosPage', segment: 'produtos', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/profile/profile.module#ProfilePageModule', name: 'ProfilePage', segment: 'profile', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/signup/signup.module#SignupPageModule', name: 'SignupPage', segment: 'signup', priority: 'low', defaultHistory: [] }
                     ]
                 }),

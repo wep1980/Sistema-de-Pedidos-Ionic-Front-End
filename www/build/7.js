@@ -1,14 +1,14 @@
 webpackJsonp([7],{
 
-/***/ 683:
+/***/ 684:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CartPageModule", function() { return CartPageModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CategoriasPageModule", function() { return CategoriasPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(87);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__cart__ = __webpack_require__(693);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__categorias__ = __webpack_require__(695);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -18,37 +18,35 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var CartPageModule = /** @class */ (function () {
-    function CartPageModule() {
+var CategoriasPageModule = /** @class */ (function () {
+    function CategoriasPageModule() {
     }
-    CartPageModule = __decorate([
+    CategoriasPageModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__cart__["a" /* CartPage */],
+                __WEBPACK_IMPORTED_MODULE_2__categorias__["a" /* CategoriasPage */],
             ],
             imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__cart__["a" /* CartPage */]),
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__categorias__["a" /* CategoriasPage */]),
             ],
         })
-    ], CartPageModule);
-    return CartPageModule;
+    ], CategoriasPageModule);
+    return CategoriasPageModule;
 }());
 
-//# sourceMappingURL=cart.module.js.map
+//# sourceMappingURL=categorias.module.js.map
 
 /***/ }),
 
-/***/ 693:
+/***/ 695:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CartPage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CategoriasPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(87);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__config_api_config__ = __webpack_require__(45);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_domain_cart_service__ = __webpack_require__(152);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_domain_produto_service__ = __webpack_require__(350);
-// Pagina que contra a pagina HTML e utiliza os metodos do cart.service.ts
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_domain_categoria_service__ = __webpack_require__(352);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -62,78 +60,60 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-
-/**
- * Generated class for the CartPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-var CartPage = /** @class */ (function () {
-    function CartPage(navCtrl, navParams, cartService, produtoService) {
+var CategoriasPage = /** @class */ (function () {
+    function CategoriasPage(navCtrl, navParams, categoriaService) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
-        this.cartService = cartService;
-        this.produtoService = produtoService;
+        this.categoriaService = categoriaService;
+        this.bucketUrl = __WEBPACK_IMPORTED_MODULE_2__config_api_config__["a" /* API_CONFIG */].bucketBaseUrl; // Variavel que recebe bucketBaseUrl criado no API_CONFIG
     }
-    CartPage.prototype.ionViewDidLoad = function () {
-        var cart = this.cartService.getCart();
-        this.items = cart.items;
-        this.loadImageUrls();
+    /**
+     * A Chamada do metodo por padrão é assincrona, é preciso se inscrever para fazer algo quando a resposta chegar.
+     * subscribe() -> Assim vc se inscreve(FUNÇÃO CALLBACK).
+     * Dentro dele se coloca uma função para executar a resposta
+     *
+     * Função anonima(Arrow function) -> Função dentro de uma função, pode ter mais de uma função,
+     * que pode receber mais de um argumento,
+     * nesse caso so recebe o response que o console.log() pega e mostra no Navegador
+     * subscribe(response =>{
+     * console.log(response)
+     * }
+     * E em caso de erro sera chamada a outra funcão
+     *  error => {
+        console.log(error);
+      }
+     */
+    CategoriasPage.prototype.ionViewDidLoad = function () {
+        var _this = this;
+        this.categoriaService.findAll().subscribe(function (response) {
+            _this.items = response; // A variavel items recebe a resposta
+            //console.log(response);
+        }, 
+        /**
+         * A responsabilidade de mostrar o erro no console esta sendo do inteceptor.
+         * É necessario ter error => {}); para que o erro não ocorra aqui, ja que o interceptor propaga o erro
+         */
+        function (error) { }); // Se for necessario fazer algo a mais do que imprimir na tela, sera feito aqui
     };
     /**
-     * Metodo que carrega as imagens em miniatura dos produtos
+     * Fazendo navegação passando parametros de uma pagina para outra.
+     * categoria_id -> Nome do atributo e o valor do atributo e o categoria_id que esta chegando como parametro no método
      */
-    CartPage.prototype.loadImageUrls = function () {
-        var _loop_1 = function () {
-            var item = this_1.items[i];
-            this_1.produtoService.getSmallImageFromBucket(item.produto.id)
-                .subscribe(function (response) {
-                item.produto.imageUrl = __WEBPACK_IMPORTED_MODULE_2__config_api_config__["a" /* API_CONFIG */].bucketBaseUrl + "/prod" + item.produto.id + "-small.jpg";
-            }, function (error) { });
-        };
-        var this_1 = this;
-        for (var i = 0; i < this.items.length; i++) {
-            _loop_1();
-        }
+    CategoriasPage.prototype.showProdutos = function (categoria_id) {
+        this.navCtrl.push('ProdutosPage', { categoria_id: categoria_id });
     };
-    // Remove um item do carrinho
-    CartPage.prototype.removeItem = function (produto) {
-        this.items = this.cartService.removeProduto(produto).items;
-    };
-    // adiciona um item no carrinho
-    CartPage.prototype.increaseQuantity = function (produto) {
-        this.items = this.cartService.increaseQuantity(produto).items;
-    };
-    // diminui um item do carrinho
-    CartPage.prototype.decreaseQuantity = function (produto) {
-        this.items = this.cartService.decreaseQuantity(produto).items;
-    };
-    // mostra o valor total do carrinho
-    CartPage.prototype.total = function () {
-        return this.cartService.total();
-    };
-    // Metodo que permite continuar comprando
-    CartPage.prototype.goOn = function () {
-        this.navCtrl.setRoot('CategoriasPage');
-    };
-    // Metodo de finalizar pedido
-    CartPage.prototype.checkout = function () {
-        this.navCtrl.push('PickAddressPage');
-    };
-    CartPage = __decorate([
+    CategoriasPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-            selector: 'page-cart',template:/*ion-inline-start:"C:\workspace ionic\ionic-spring-frontend\src\pages\cart\cart.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n        <ion-icon name="menu"></ion-icon>\n    </button>    \n    <ion-title>Carrinho de compras</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n  <ion-list>\n    <!--items -> Criado em cart.ts-->\n    <ion-item *ngFor="let item of items">\n      <ion-thumbnail item-start>\n        <img [src]="item.produto.imageUrl || \'assets/imgs/prod.jpg\'">\n      </ion-thumbnail>\n      <h2>{{item.produto.nome}}</h2>\n      <!--currency-> Formato de dinheiro-->\n      <p>{{item.produto.preco | currency}}</p>\n\n      <!--class="nolinebreak" -> Classe CSS criada em cart.scss-->\n      <ion-icon class="nolinebreak" name="remove-circle" color="primary" (click)="decreaseQuantity(item.produto)"></ion-icon>\n      <p class="nolinebreak">{{item.quantidade}}</p>\n      <ion-icon name="add-circle" color="primary" (click)="increaseQuantity(item.produto)"></ion-icon>\n\n      <!--item-end ->Coloca o icone na direita -->\n      <ion-icon name="trash" item-end color="danger" (click)="removeItem(item.produto)"></ion-icon>\n    </ion-item>\n\n    <ion-item *ngIf="total() > 0"> <!--Se o valor total for maio que 0 o valor sera mostrado-->\n      <h1>Total</h1>\n      <h1 item-end>{{total()}}</h1>\n    </ion-item>\n\n    <ion-item *ngIf="total() <= 0"> <!--Se o valor total for menor que 0 o valor não sera mostrado-->\n      <h1>Seu carrinho esta vazio</h1>\n    </ion-item>\n  </ion-list> \n\n  <button ion-button block (click)="goOn()">Continuar comprando</button> \n  <button ion-button color="secondary" block (click)="checkout()">Finalizar pedido</button> \n\n\n</ion-content>\n'/*ion-inline-end:"C:\workspace ionic\ionic-spring-frontend\src\pages\cart\cart.html"*/,
+            selector: 'page-categorias',template:/*ion-inline-start:"C:\workspace ionic\ionic-spring-frontend\src\pages\categorias\categorias.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle> <!--Colocando botão iniciar na pagina inicial -->\n       <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Categorias</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n\n  <!--Botão flutante do carrinho de compras. navPush="CartPage"-> Navega para a pagina de carrinho -->\n  <ion-fab top right edge>\n    <button navPush="CartPage" ion-fab mini><ion-icon name="cart"></ion-icon></button>\n  </ion-fab>\n\n  <ion-list>\n<!-- button ion-item -> Todo item fica clicavel -- Diretiva do Angular *ngFor = lê uma coleção e repetir o \n  numero de vezes da coleção. \n  *ngFor="let item of items" = Diretiva que percorre a lista de items( VARIAVEL CRIADA NO CONTROLADOR ) \n  e cada elemento recebe o apelido de item.  (click)="showProdutos()-> binding de produtos que pega o id da categoria selecionada, apertou na categoria exibe os produtos -->\n    <button ion-item *ngFor="let item of items" (click)="showProdutos(item.id)">\n      <ion-thumbnail item-start>\n        <!-- {{}} INTERPOLAÇÃO bucketUrl(variavel criada no controlador) com concatenação /cat que referencia o \n          nome das imagens de categoria e busca o id de cada uma das imagens -->\n        <img src="{{bucketUrl}}/cat{{item.id}}.jpg" alt=""> \n      </ion-thumbnail>  \n      <!-- {{}} INTERPOLAÇÃO = Interpola o conteudo do HTML com o DADO que veio do controlador  -->\n        <h2>{{ item.nome }}</h2> \n    </button>\n\n  </ion-list>\n\n</ion-content>\n'/*ion-inline-end:"C:\workspace ionic\ionic-spring-frontend\src\pages\categorias\categorias.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */],
-            __WEBPACK_IMPORTED_MODULE_3__services_domain_cart_service__["a" /* CartService */],
-            __WEBPACK_IMPORTED_MODULE_4__services_domain_produto_service__["a" /* ProdutoService */]])
-    ], CartPage);
-    return CartPage;
+            __WEBPACK_IMPORTED_MODULE_3__services_domain_categoria_service__["a" /* CategoriaService */]])
+    ], CategoriasPage);
+    return CategoriasPage;
 }());
 
-//# sourceMappingURL=cart.js.map
+//# sourceMappingURL=categorias.js.map
 
 /***/ })
 
