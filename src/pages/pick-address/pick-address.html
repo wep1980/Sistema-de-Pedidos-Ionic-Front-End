@@ -1,4 +1,4 @@
-
+<!--Pagina de endereços do Cliente-->
 <ion-header>
   <ion-navbar>
     <button ion-button menuToggle>
@@ -13,7 +13,8 @@
         <ion-list-header>
           Selecione um endereço
         </ion-list-header>
-        <button ion-item *ngFor="let item of items">
+        <!--(click)="nextPage(item)"-> Passa o endereço clicado como argumento -->
+        <button ion-item *ngFor="let item of items" (click)="nextPage(item)">
             <h2>{{item.logradouro}}, {{item.numero}}</h2>
             <p>{{item.complemento}} {{item.bairro}} CEP {{item.cep}}</p>
             <p>{{item.cidade.nome}}, {{item.cidade.estado.nome}}</p>
