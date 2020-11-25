@@ -16,17 +16,20 @@ export class ClienteService {
 
 
     /**
-     * Método que busca um usuario por email pogando por parametro o email digitado pelo usuario
+     * Método que busca um usuario por email pogando por parametro o email digitado pelo usuario.
+     * 
+     * Observable<ClienteDTO> -> A tipagem do metodo esta sendo retirada -> <ClienteDTO>
+     * COM ISSO SERA RETORNADO EXTAMANETO O OBJETO QUE VEM DO BACKEND
      * @param email 
      */
-    findByEmail(email: string): Observable<ClienteDTO> {
+    findByEmail(email: string) /*: Observable<ClienteDTO>*/ {
 
        // let token = this.storage.getLocalUser().token; // let token -> variavel temporaria
 
         // Cabeçalho que sera enviado
        // let authHeader = new HttpHeaders({'Authorization': 'Bearer ' + token});
 
-        return this.http.get<ClienteDTO>(
+        return this.http.get /*<ClienteDTO>*/(
             `${API_CONFIG.baseUrl}/clientes/email?value=${email}`);
            // {'headers': authHeader}); //passa o cabeçalho para a requisição
     }

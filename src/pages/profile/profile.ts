@@ -31,7 +31,9 @@ export class ProfilePage {
     if (localUser && localUser.email) {
       // this.email = localUser.email; // Codigo provisorio
       this.clienteService.findByEmail(localUser.email).subscribe(response => {
-        this.cliente = response;
+
+        // Como houve alteração no cliente.service.ts onde e retornado um cliente completo do backend e necessario colocar um casting afirmando para o compilador que a resposta vai casar com os dados do cliente
+        this.cliente = response as ClienteDTO;
         this.getImageIfExists();
       },
         error => { // Tratamento do erro 403 caso ocorra, e redirecionamento para a pagina HomePage

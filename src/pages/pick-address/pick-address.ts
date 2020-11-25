@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { EnderecoDTO } from '../../models/endereco.dto';
+import { ClienteService } from '../../services/domain/cliente.service';
+import { StorageService } from '../../services/storage.service';
 
 
 @IonicPage()
@@ -12,44 +14,28 @@ export class PickAddressPage {
 
   items: EnderecoDTO[];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(
+    public navCtrl: NavController, 
+    public navParams: NavParams,
+    public storage: StorageService,
+    public clienteService: ClienteService) {
   }
 
   ionViewDidLoad() {
-    this.items = [
-      {
-        id: "1",
-        logradouro: "Rua Quinze de Novembro",
-        numero: "300",
-        complemento: "Apto 200",
-        bairro: "Santa Mônica",
-        cep: "48293822",
-        cidade: {
-          id: "1",
-          nome: "Uberlândia",
-          estado: {
-            id: "1",
-            nome: "Minas Gerais"
+    let localUser = this.storage.getLocalUser(); // pega o usario que esta logado no localStorage
+    if (localUser && localUser.email) { // Verifica se o objeto esta Ok
+      this.clienteService.findByEmail(localUser.email) // Faz a busca por email
+        .subscribe(response => { // se Inscreve para resposta
+          this.items = response['enderecos']; // E pega os endereços do cliente. Esta entre ['enderecos'] pq assim fica livre de erro do compilador e essa resposta que vem do backend
+        },
+        error => {
+          if (error.status == 403) {
+            this.navCtrl.setRoot('HomePage');
           }
-        }
-      },
-      {
-        id: "2",
-        logradouro: "Rua Alexandre Toledo da Silva",
-        numero: "405",
-        complemento: null,
-        bairro: "Centro",
-        cep: "88933822",
-        cidade: {
-          id: "3",
-          nome: "São Paulo",
-          estado: {
-            id: "2",
-            nome: "São Paulo"
-          }
-        }
-      }
-    ];
+        });
+}
+else{
+    this.navCtrl.setRoot('HomePage');
+    }
   }
-
 }

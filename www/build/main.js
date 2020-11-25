@@ -245,27 +245,27 @@ webpackEmptyAsyncContext.id = 164;
 
 var map = {
 	"../pages/cart/cart.module": [
-		683,
+		684,
 		7
 	],
 	"../pages/categorias/categorias.module": [
-		684,
+		683,
 		6
 	],
 	"../pages/home/home.module": [
-		686,
+		685,
 		5
 	],
 	"../pages/pick-address/pick-address.module": [
-		685,
+		688,
 		4
 	],
 	"../pages/produto-detail/produto-detail.module": [
-		688,
+		687,
 		3
 	],
 	"../pages/produtos/produtos.module": [
-		687,
+		686,
 		2
 	],
 	"../pages/profile/profile.module": [
@@ -380,14 +380,17 @@ var ClienteService = /** @class */ (function () {
         this.storage = storage;
     }
     /**
-     * Método que busca um usuario por email pogando por parametro o email digitado pelo usuario
+     * Método que busca um usuario por email pogando por parametro o email digitado pelo usuario.
+     *
+     * Observable<ClienteDTO> -> A tipagem do metodo esta sendo retirada -> <ClienteDTO>
+     * COM ISSO SERA RETORNADO EXTAMANETO O OBJETO QUE VEM DO BACKEND
      * @param email
      */
     ClienteService.prototype.findByEmail = function (email) {
         // let token = this.storage.getLocalUser().token; // let token -> variavel temporaria
         // Cabeçalho que sera enviado
         // let authHeader = new HttpHeaders({'Authorization': 'Bearer ' + token});
-        return this.http.get(__WEBPACK_IMPORTED_MODULE_2__config_api_config__["a" /* API_CONFIG */].baseUrl + "/clientes/email?value=" + email);
+        return this.http.get /*<ClienteDTO>*/(__WEBPACK_IMPORTED_MODULE_2__config_api_config__["a" /* API_CONFIG */].baseUrl + "/clientes/email?value=" + email);
         // {'headers': authHeader}); //passa o cabeçalho para a requisição
     };
     /**
@@ -550,12 +553,12 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpClientModule */],
                 __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["d" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_4__app_component__["a" /* MyApp */], {}, {
                     links: [
-                        { loadChildren: '../pages/cart/cart.module#CartPageModule', name: 'CartPage', segment: 'cart', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/categorias/categorias.module#CategoriasPageModule', name: 'CategoriasPage', segment: 'categorias', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/pick-address/pick-address.module#PickAddressPageModule', name: 'PickAddressPage', segment: 'pick-address', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/cart/cart.module#CartPageModule', name: 'CartPage', segment: 'cart', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/home/home.module#HomeModule', name: 'HomePage', segment: 'home', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/produtos/produtos.module#ProdutosPageModule', name: 'ProdutosPage', segment: 'produtos', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/produto-detail/produto-detail.module#ProdutoDetailPageModule', name: 'ProdutoDetailPage', segment: 'produto-detail', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/pick-address/pick-address.module#PickAddressPageModule', name: 'PickAddressPage', segment: 'pick-address', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/profile/profile.module#ProfilePageModule', name: 'ProfilePage', segment: 'profile', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/signup/signup.module#SignupPageModule', name: 'SignupPage', segment: 'signup', priority: 'low', defaultHistory: [] }
                     ]
