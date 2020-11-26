@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs/Rx";
 import { API_CONFIG } from "../../config/api.config";
 import { ClienteDTO } from "../../models/cliente.dto";
+import { ImageUtilService } from "../image-util.service";
 import { StorageService } from "../storage.service";
 
 
@@ -11,7 +12,8 @@ export class ClienteService {
 
     constructor(
         public http: HttpClient, 
-        public storage: StorageService) {
+        public storage: StorageService,
+        public imageUtilService: ImageUtilService) {
     }
 
 
@@ -65,6 +67,25 @@ export class ClienteService {
           responseType: 'text' // Como o corpo vem vazio isso evita o erro de parse do JSON
        }
        );
+    }
+
+
+    /**
+     * Metodo que faz upload da foto
+     * @param picture 
+     */
+    uploadPicture(picture) {
+        let pictureBlob = this.imageUtilService.dataUriToBlob(picture); // Convertendo imagem de base64 para blob
+        let formData : FormData = new FormData(); // Instanciado um objeto do tipo FormData(). Quando e feita a requisição o parametro e enviado no tipo formData
+        formData.set('file', pictureBlob, 'file.png'); // Passando os parametros da imagem. 'file'-> nome do atributo. pictureBlob-> valor do atributo(arquivo). 'file.png'-> nome do arquivo
+        return this.http.post(
+            `${API_CONFIG.baseUrl}/clientes/picture`, 
+            formData, // Objeto que sera enviado
+            { 
+                observe: 'response', 
+                responseType: 'text'
+            }
+        ); 
     }
 
 }

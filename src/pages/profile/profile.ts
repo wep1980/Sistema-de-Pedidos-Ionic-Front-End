@@ -30,7 +30,11 @@ export class ProfilePage {
   }
 
   ionViewDidLoad() {
-    let localUser = this.storage.getLocalUser(); // Codigo temporario apenas para mostrar o email na tela
+    this.loadData();
+  }
+
+  loadData(){
+    let localUser = this.storage.getLocalUser(); 
     //console.log(localUser);
     if (localUser && localUser.email) {
       // this.email = localUser.email; // Codigo provisorio
@@ -51,7 +55,6 @@ export class ProfilePage {
       this.navCtrl.setRoot('HomePage');
     }
   }
-
 
   /**
    * Método que verifica se a imagem que vem do bucket da amazon existe
@@ -83,6 +86,24 @@ export class ProfilePage {
      this.cameraOn = false; // desliga a camera (OFF)
     }, (err) => {
     });
+  }
+
+
+  sendPicture() {
+    this.clienteService.uploadPicture(this.picture) // Envia a imagem
+      .subscribe(response => {
+        this.picture = null;
+        this.loadData(); // recarrega os dados da pagina
+      },
+      error => {
+      });
+  }
+
+  /**
+   * Metodo para descartar a imagem
+   */
+  cancel() {
+    this.picture = null;
   }
 
 }

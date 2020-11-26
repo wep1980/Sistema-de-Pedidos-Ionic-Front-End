@@ -9,7 +9,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(87);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__profile__ = __webpack_require__(705);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_camera__ = __webpack_require__(694);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_camera__ = __webpack_require__(695);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -44,7 +44,7 @@ var ProfilePageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 694:
+/***/ 695:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -272,10 +272,10 @@ var Camera = (function (_super) {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProfilePage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ionic_native_camera__ = __webpack_require__(694);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ionic_native_camera__ = __webpack_require__(695);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(87);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__config_api_config__ = __webpack_require__(45);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_domain_cliente_service__ = __webpack_require__(350);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_domain_cliente_service__ = __webpack_require__(351);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_storage_service__ = __webpack_require__(43);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -302,8 +302,11 @@ var ProfilePage = /** @class */ (function () {
         this.cameraOn = false; // A camera esta ligada ou não
     }
     ProfilePage.prototype.ionViewDidLoad = function () {
+        this.loadData();
+    };
+    ProfilePage.prototype.loadData = function () {
         var _this = this;
-        var localUser = this.storage.getLocalUser(); // Codigo temporario apenas para mostrar o email na tela
+        var localUser = this.storage.getLocalUser();
         //console.log(localUser);
         if (localUser && localUser.email) {
             // this.email = localUser.email; // Codigo provisorio
@@ -348,9 +351,24 @@ var ProfilePage = /** @class */ (function () {
         }, function (err) {
         });
     };
+    ProfilePage.prototype.sendPicture = function () {
+        var _this = this;
+        this.clienteService.uploadPicture(this.picture) // Envia a imagem
+            .subscribe(function (response) {
+            _this.picture = null;
+            _this.loadData(); // recarrega os dados da pagina
+        }, function (error) {
+        });
+    };
+    /**
+     * Metodo para descartar a imagem
+     */
+    ProfilePage.prototype.cancel = function () {
+        this.picture = null;
+    };
     ProfilePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-            selector: 'page-profile',template:/*ion-inline-start:"C:\workspace ionic\ionic-spring-frontend\src\pages\profile\profile.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle> <!--Colocando o menu na pagina de profile -->\n      <ion-icon name="menu"></ion-icon>\n   </button>\n    <ion-title>Profile</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n   <ion-avatar>\n     <!--[src]= Binding de dados, se não exister a imagem do cliente a imagem padrão sera colocada-->\n     <!--cliente? -> Operador de navegação segura do angular, se a variavel nao vale nada, não ocorrera erros na pagina -->\n     <img class="circle" [src]="cliente?.imageUrl || \'assets/imgs/avatar-blank.png\' ">\n   </ion-avatar>\n   <h2 text-center>{{cliente?.nome}}</h2>\n   <p text-center>{{cliente?.email}}</p>\n\n   <ion-card> <!--Caixinha para pegar a foto do usuario-->\n    <ion-card-header>\n      Enviar imagem de perfil\n    </ion-card-header>\n    <ion-item *ngIf="picture"> <!--So sera mostrado se o objeto picture estiver preenchido-->\n      <img [src]="picture">\n    </ion-item>\n    <ion-item>\n      <!--[disabled]="cameraOn" -> O botão fica desabilitado quando a camera estiver ligada-->\n      <button ion-button block (click)="getCameraPicture()" [disabled]="cameraOn">Camera</button>\n    </ion-item>\n  </ion-card>  \n</ion-content>\n'/*ion-inline-end:"C:\workspace ionic\ionic-spring-frontend\src\pages\profile\profile.html"*/,
+            selector: 'page-profile',template:/*ion-inline-start:"C:\workspace ionic\ionic-spring-frontend\src\pages\profile\profile.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle> <!--Colocando o menu na pagina de profile -->\n      <ion-icon name="menu"></ion-icon>\n   </button>\n    <ion-title>Profile</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n   <ion-avatar>\n     <!--[src]= Binding de dados, se não exister a imagem do cliente a imagem padrão sera colocada-->\n     <!--cliente? -> Operador de navegação segura do angular, se a variavel nao vale nada, não ocorrera erros na pagina -->\n     <img class="circle" [src]="cliente?.imageUrl || \'assets/imgs/avatar-blank.png\' ">\n   </ion-avatar>\n   <h2 text-center>{{cliente?.nome}}</h2>\n   <p text-center>{{cliente?.email}}</p>\n\n   <ion-card> <!--Caixinha para pegar a foto do usuario-->\n    <ion-card-header>\n      Enviar imagem de perfil\n    </ion-card-header>\n    <ion-item *ngIf="picture"> <!--So sera mostrado se o objeto picture estiver preenchido-->\n      <img [src]="picture">\n    </ion-item>\n    <ion-item>\n      <!--[disabled]="cameraOn" -> O botão fica desabilitado quando a camera estiver ligada-->\n      <button ion-button block (click)="getCameraPicture()" [disabled]="cameraOn">Camera</button>\n\n      <button *ngIf="picture" ion-button outline block (click)="sendPicture()">Enviar imagem</button> <!--Esse botão so ira aparecer se tiver uma imagem carregada-->\n      <button *ngIf="picture" ion-button outline block (click)="cancel()">Descartar imagem</button> <!--Esse botão so ira aparecer se tiver uma imagem carregada-->\n    </ion-item>\n  </ion-card>  \n</ion-content>\n'/*ion-inline-end:"C:\workspace ionic\ionic-spring-frontend\src\pages\profile\profile.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["i" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["j" /* NavParams */],
