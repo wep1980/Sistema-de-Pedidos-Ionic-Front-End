@@ -20,8 +20,12 @@ export class ProdutosPage {
               public loadingCtrl: LoadingController) {
   }
 
-  // Dados estaticos para testar a pagina
+  
   ionViewDidLoad() {
+    this.loadData();
+  } 
+
+  loadData(){
     let categoria_id = this.navParams.get('categoria_id');
     let loader = this.presentLoading(); // Chamando o loading
     // Capturando o dado que foi passado na navegação = categorias.ts showProdutos()
@@ -34,11 +38,9 @@ export class ProdutosPage {
     error => {
       loader.dismiss(); // fecha a janela do loading
     });
-  } 
+  }
 
-  /**
-   * 
-   */
+
   loadImageUrls() {
     for (var i=0; i<this.items.length; i++) { // Percorre a lista de produtos
       let item = this.items[i];
@@ -68,5 +70,17 @@ export class ProdutosPage {
     });
     loader.present();
     return loader;
+  }
+
+
+  /**
+   * Metodo que da refresh na pagina ao puxar ela para baixo
+   * @param refresher 
+   */
+  doRefresh(refresher) {
+    this.loadData(); // recarrega os dados
+    setTimeout(() => {
+      refresher.complete(); // depois de 1 segundo fecha o refresher que aparece no canto da tela
+    }, 1000);
   }
 }

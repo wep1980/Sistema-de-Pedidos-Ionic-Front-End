@@ -1,6 +1,6 @@
 webpackJsonp([3],{
 
-/***/ 690:
+/***/ 691:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8,7 +8,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ProdutosPageModule", function() { return ProdutosPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(87);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__produtos__ = __webpack_require__(703);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__produtos__ = __webpack_require__(704);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -38,7 +38,7 @@ var ProdutosPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 703:
+/***/ 704:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -67,8 +67,10 @@ var ProdutosPage = /** @class */ (function () {
         this.produtoService = produtoService;
         this.loadingCtrl = loadingCtrl;
     }
-    // Dados estaticos para testar a pagina
     ProdutosPage.prototype.ionViewDidLoad = function () {
+        this.loadData();
+    };
+    ProdutosPage.prototype.loadData = function () {
         var _this = this;
         var categoria_id = this.navParams.get('categoria_id');
         var loader = this.presentLoading(); // Chamando o loading
@@ -82,9 +84,6 @@ var ProdutosPage = /** @class */ (function () {
             loader.dismiss(); // fecha a janela do loading
         });
     };
-    /**
-     *
-     */
     ProdutosPage.prototype.loadImageUrls = function () {
         var _loop_1 = function () {
             var item = this_1.items[i];
@@ -114,14 +113,26 @@ var ProdutosPage = /** @class */ (function () {
         loader.present();
         return loader;
     };
+    /**
+     * Metodo que da refresh na pagina ao puxar ela para baixo
+     * @param refresher
+     */
+    ProdutosPage.prototype.doRefresh = function (refresher) {
+        this.loadData(); // recarrega os dados
+        setTimeout(function () {
+            refresher.complete(); // depois de 1 segundo fecha o refresher que aparece no canto da tela
+        }, 1000);
+    };
     ProdutosPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-            selector: 'page-produtos',template:/*ion-inline-start:"C:\workspace ionic\ionic-spring-frontend\src\pages\produtos\produtos.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Produtos</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n\n  <!--Botão flutante do carrinho de compras. navPush="CartPage"-> Navega para a pagina de carrinho -->\n  <ion-fab top right edge>\n    <button navPush="CartPage" ion-fab mini><ion-icon name="cart"></ion-icon></button>\n  </ion-fab>\n  \n  <ion-list>\n    <button ion-item *ngFor="let item of items" (click)="showDatail(item.id)">\n      <ion-thumbnail item-start>\n        <!--assets/imgs/prod.jpg -> Imagem padrão, quando o produto não tem foto-->\n        <img [src]="item.imageUrl || \'assets/imgs/prod.jpg\'">\n      </ion-thumbnail>\n      <h2>{{item.nome}}</h2>\n      <!--currency -> é um pipe para formatar o número ao estile de moeda-->\n      <p>{{item.preco | currency}}</p>\n    </button>\n  </ion-list>\n</ion-content>\n'/*ion-inline-end:"C:\workspace ionic\ionic-spring-frontend\src\pages\produtos\produtos.html"*/,
+            selector: 'page-produtos',template:/*ion-inline-start:"C:\workspace ionic\ionic-spring-frontend\src\pages\produtos\produtos.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Produtos</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n\n  <ion-refresher (ionRefresh)="doRefresh($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n\n  <!--Botão flutante do carrinho de compras. navPush="CartPage"-> Navega para a pagina de carrinho -->\n  <ion-fab top right edge>\n    <button navPush="CartPage" ion-fab mini><ion-icon name="cart"></ion-icon></button>\n  </ion-fab>\n  \n  <ion-list>\n    <button ion-item *ngFor="let item of items" (click)="showDatail(item.id)">\n      <ion-thumbnail item-start>\n        <!--assets/imgs/prod.jpg -> Imagem padrão, quando o produto não tem foto-->\n        <img [src]="item.imageUrl || \'assets/imgs/prod.jpg\'">\n      </ion-thumbnail>\n      <h2>{{item.nome}}</h2>\n      <!--currency -> é um pipe para formatar o número ao estile de moeda-->\n      <p>{{item.preco | currency}}</p>\n    </button>\n  </ion-list>\n</ion-content>\n'/*ion-inline-end:"C:\workspace ionic\ionic-spring-frontend\src\pages\produtos\produtos.html"*/,
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__services_domain_produto_service__["a" /* ProdutoService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__services_domain_produto_service__["a" /* ProdutoService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */]) === "function" && _d || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavParams */],
+            __WEBPACK_IMPORTED_MODULE_3__services_domain_produto_service__["a" /* ProdutoService */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */]])
     ], ProdutosPage);
     return ProdutosPage;
-    var _a, _b, _c, _d;
 }());
 
 //# sourceMappingURL=produtos.js.map
