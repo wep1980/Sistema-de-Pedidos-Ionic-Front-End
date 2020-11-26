@@ -93,8 +93,8 @@ export class ProdutosPage {
    * @param refresher 
    */
   doRefresh(refresher) {
-    this.page = 0;
-    this.items = [];
+    this.page = 0; // Ao fazer o refresh carrega apenas os 10 primeiros (Resolve o problema de paginação)
+    this.items = []; //  // Ao fazer o refresh carrega apenas os 10 primeiros (Resolve o problema de paginação)
     this.loadData(); // recarrega os dados
     setTimeout(() => {
       refresher.complete(); // depois de 1 segundo fecha o refresher que aparece no canto da tela
