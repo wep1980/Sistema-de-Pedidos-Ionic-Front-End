@@ -4,11 +4,14 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Confira seu pedido</ion-title>
+    <ion-title *ngIf="codpedido">Pedido registrado!</ion-title> <!--Se tiver o codigo do pedido sera mostrado -->
+    <ion-title *ngIf="!codpedido">Confira seu pedido</ion-title> <!--Se não tiver o codigo do pedido ainda sera mostrado -->
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
+
+  <div *ngIf="!codpedido"> <!--Esse bloco sera mostrado antes de confirmar o pedido -->
 
   <ion-card>
     <ion-card-header>
@@ -73,4 +76,19 @@
   <button ion-button block (click)="checkout()">Confirmar pedido</button>
   <button ion-button block outline (click)="back()">Voltar</button>
 
-</ion-content>
+  </div>
+
+  <div *ngIf="codpedido"> <!--Depois de confirmar o pedido o bloco aparece -->
+    <ion-card>
+        <ion-card-header>
+          Seu pedido foi registrado!
+        </ion-card-header>
+        <ion-item>
+          <h2>Código do pedido: {{codpedido}}</h2>
+          <p>Verifique seu email</p>
+        </ion-item>
+    </ion-card>
+    <button ion-button block outline (click)="home()">Voltar</button> <!-- retorna para a pagina de categorias -->
+  </div>
+  </ion-content>
+

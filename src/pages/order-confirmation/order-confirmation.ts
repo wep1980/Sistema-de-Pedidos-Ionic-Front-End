@@ -19,6 +19,7 @@ export class OrderConfirmationPage {
   cartItems: CartItem[]; // Para mostrar os itens do carrinho
   cliente: ClienteDTO; // Para mostrar o cliente logado
   endereco: EnderecoDTO; // Para mostrar o endereço
+  codpedido: string;
 
   constructor(
     public navCtrl: NavController, 
@@ -64,7 +65,8 @@ export class OrderConfirmationPage {
     this.pedidoService.insert(this.pedido)
       .subscribe(response => {
         this.cartService.createOrClearCart(); // Limpa o carrinho depois de salvar o pedido no BD 
-        console.log(response.headers.get('location')); // Pegando o location do headers do novo recurso salvo(Postman) -- Para o location funcionar no angular, no cap.8 aula 95 é ensinado como expor o location
+        //console.log(response.headers.get('location')); // Pegando o location do headers do novo recurso salvo(Postman) -- Para o location funcionar no angular, no cap.8 aula 95 é ensinado como expor o location
+        this.codpedido = this.extractId(response.headers.get('location')); // Extrai o id da URL que esta contida em location do novo pedido salvo
       },
       error => {
         if (error.status == 403) {
@@ -78,5 +80,22 @@ export class OrderConfirmationPage {
    */
   back() {
     this.navCtrl.setRoot('CartPage');
+  }
+
+
+  /**
+   * Metodo que pega o id da URL contida no location
+   * @param location 
+   */
+  private extractId(location : string) : string {
+    let position = location.lastIndexOf('/'); // achando a ultima posição do subString informado no ('/')
+    return location.substring(position + 1, location.length); // recorta o caracter que estiver na frente da /
+  }
+
+  /**
+   * Retorna para a pagina de categorias
+   */
+  home() {
+    this.navCtrl.setRoot('CategoriasPage');
   }
 }
