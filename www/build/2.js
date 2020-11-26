@@ -1,14 +1,14 @@
 webpackJsonp([2],{
 
-/***/ 690:
+/***/ 691:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ProdutosPageModule", function() { return ProdutosPageModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ProfilePageModule", function() { return ProfilePageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(87);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__produtos__ = __webpack_require__(702);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__profile__ = __webpack_require__(704);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -18,35 +18,36 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var ProdutosPageModule = /** @class */ (function () {
-    function ProdutosPageModule() {
+var ProfilePageModule = /** @class */ (function () {
+    function ProfilePageModule() {
     }
-    ProdutosPageModule = __decorate([
+    ProfilePageModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__produtos__["a" /* ProdutosPage */],
+                __WEBPACK_IMPORTED_MODULE_2__profile__["a" /* ProfilePage */],
             ],
             imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__produtos__["a" /* ProdutosPage */]),
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__profile__["a" /* ProfilePage */]),
             ],
         })
-    ], ProdutosPageModule);
-    return ProdutosPageModule;
+    ], ProfilePageModule);
+    return ProfilePageModule;
 }());
 
-//# sourceMappingURL=produtos.module.js.map
+//# sourceMappingURL=profile.module.js.map
 
 /***/ }),
 
-/***/ 702:
+/***/ 704:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProdutosPage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProfilePage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(87);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__config_api_config__ = __webpack_require__(45);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_domain_produto_service__ = __webpack_require__(351);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_domain_cliente_service__ = __webpack_require__(350);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_storage_service__ = __webpack_require__(43);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -60,57 +61,56 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-var ProdutosPage = /** @class */ (function () {
-    function ProdutosPage(navCtrl, navParams, produtoService) {
+
+var ProfilePage = /** @class */ (function () {
+    function ProfilePage(navCtrl, navParams, storage, clienteService) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
-        this.produtoService = produtoService;
+        this.storage = storage;
+        this.clienteService = clienteService;
     }
-    // Dados estaticos para testar a pagina
-    ProdutosPage.prototype.ionViewDidLoad = function () {
+    ProfilePage.prototype.ionViewDidLoad = function () {
         var _this = this;
-        var categoria_id = this.navParams.get('categoria_id');
-        // Capturando o dado que foi passado na navegação = categorias.ts showProdutos()
-        // A resposta que vem do backend e um endpoint paginado, entao vira uma resposta diferente. -- ['content'] e o atributo que vem que carrega as categorias. TESTAR NO POSTMAN URL http://localhost:8080/produtos?categorias=2
-        this.produtoService.findByCategoria(categoria_id).subscribe(function (response) {
-            _this.items = response['content'];
-            _this.loadImageUrls();
-        }, function (error) { });
-    };
-    /**
-     *
-     */
-    ProdutosPage.prototype.loadImageUrls = function () {
-        var _loop_1 = function () {
-            var item = this_1.items[i];
-            this_1.produtoService.getSmallImageFromBucket(item.id)
-                .subscribe(function (response) {
-                item.imageUrl = __WEBPACK_IMPORTED_MODULE_2__config_api_config__["a" /* API_CONFIG */].bucketBaseUrl + "/prod" + item.id + "-small.jpg";
-            }, function (error) { });
-        };
-        var this_1 = this;
-        for (var i = 0; i < this.items.length; i++) {
-            _loop_1();
+        var localUser = this.storage.getLocalUser(); // Codigo temporario apenas para mostrar o email na tela
+        //console.log(localUser);
+        if (localUser && localUser.email) {
+            // this.email = localUser.email; // Codigo provisorio
+            this.clienteService.findByEmail(localUser.email).subscribe(function (response) {
+                // Como houve alteração no cliente.service.ts onde e retornado um cliente completo do backend e necessario colocar um casting afirmando para o compilador que a resposta vai casar com os dados do cliente
+                _this.cliente = response;
+                _this.getImageIfExists();
+            }, function (error) {
+                if (error.status == 403) {
+                    _this.navCtrl.setRoot('HomePage');
+                }
+            });
+        }
+        else {
+            this.navCtrl.setRoot('HomePage');
         }
     };
     /**
-     * Metodo que exibe os detalhes dos produtos
+     * Método que verifica se a imagem que vem do bucket da amazon existe
      */
-    ProdutosPage.prototype.showDatail = function (produto_id) {
-        this.navCtrl.push('ProdutoDetailPage', { produto_id: produto_id });
+    ProfilePage.prototype.getImageIfExists = function () {
+        var _this = this;
+        this.clienteService.getImageFromBucket(this.cliente.id).subscribe(function (response) {
+            _this.cliente.imageUrl = __WEBPACK_IMPORTED_MODULE_2__config_api_config__["a" /* API_CONFIG */].bucketBaseUrl + "/cp" + _this.cliente.id + ".jpg";
+        }, function (error) { });
     };
-    ProdutosPage = __decorate([
+    ProfilePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-            selector: 'page-produtos',template:/*ion-inline-start:"C:\workspace ionic\ionic-spring-frontend\src\pages\produtos\produtos.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Produtos</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n\n  <!--Botão flutante do carrinho de compras. navPush="CartPage"-> Navega para a pagina de carrinho -->\n  <ion-fab top right edge>\n    <button navPush="CartPage" ion-fab mini><ion-icon name="cart"></ion-icon></button>\n  </ion-fab>\n  \n  <ion-list>\n    <button ion-item *ngFor="let item of items" (click)="showDatail(item.id)">\n      <ion-thumbnail item-start>\n        <!--assets/imgs/prod.jpg -> Imagem padrão, quando o produto não tem foto-->\n        <img [src]="item.imageUrl || \'assets/imgs/prod.jpg\'">\n      </ion-thumbnail>\n      <h2>{{item.nome}}</h2>\n      <!--currency -> é um pipe para formatar o número ao estile de moeda-->\n      <p>{{item.preco | currency}}</p>\n    </button>\n  </ion-list>\n</ion-content>\n'/*ion-inline-end:"C:\workspace ionic\ionic-spring-frontend\src\pages\produtos\produtos.html"*/,
+            selector: 'page-profile',template:/*ion-inline-start:"C:\workspace ionic\ionic-spring-frontend\src\pages\profile\profile.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle> <!--Colocando o menu na pagina de profile -->\n      <ion-icon name="menu"></ion-icon>\n   </button>\n    <ion-title>Profile</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n   <ion-avatar>\n     <!--[src]= Binding de dados, se não exister a imagem do cliente a imagem padrão sera colocada-->\n     <!--cliente? -> Operador de navegação segura do angular, se a variavel nao vale nada, não ocorrera erros na pagina -->\n     <img class="circle" [src]="cliente?.imageUrl || \'assets/imgs/avatar-blank.png\' ">\n   </ion-avatar>\n   <h2 text-center>{{cliente?.nome}}</h2>\n   <p text-center>{{cliente?.email}}</p>\n</ion-content>\n'/*ion-inline-end:"C:\workspace ionic\ionic-spring-frontend\src\pages\profile\profile.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */],
-            __WEBPACK_IMPORTED_MODULE_3__services_domain_produto_service__["a" /* ProdutoService */]])
-    ], ProdutosPage);
-    return ProdutosPage;
+            __WEBPACK_IMPORTED_MODULE_4__services_storage_service__["a" /* StorageService */],
+            __WEBPACK_IMPORTED_MODULE_3__services_domain_cliente_service__["a" /* ClienteService */]])
+    ], ProfilePage);
+    return ProfilePage;
 }());
 
-//# sourceMappingURL=produtos.js.map
+//# sourceMappingURL=profile.js.map
 
 /***/ })
 

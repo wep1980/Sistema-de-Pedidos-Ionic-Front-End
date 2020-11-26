@@ -6,6 +6,7 @@ import { EnderecoDTO } from '../../models/endereco.dto';
 import { ClienteDTO } from '../../models/cliente.dto';
 import { ClienteService } from '../../services/domain/cliente.service';
 import { CartService } from '../../services/domain/cart.service';
+import { PedidoService } from '../../services/domain/pedido.service';
 
 @IonicPage()
 @Component({
@@ -23,7 +24,8 @@ export class OrderConfirmationPage {
     public navCtrl: NavController, 
     public navParams: NavParams,
     public clienteService: ClienteService,
-    public cartService: CartService) {
+    public cartService: CartService,
+    public pedidoService: PedidoService) {
 
     // Carregando o pedido no construtor - Passa o pedido como parametro de uma pagina para outra  
     this.pedido = this.navParams.get('pedido');
@@ -57,4 +59,24 @@ export class OrderConfirmationPage {
   total() : number {
     return this.cartService.total();
   } 
+
+  checkout() {
+    this.pedidoService.insert(this.pedido)
+      .subscribe(response => {
+        this.cartService.createOrClearCart(); // Limpa o carrinho depois de salvar o pedido no BD 
+        console.log(response.headers.get('location')); // Pegando o location do headers do novo recurso salvo(Postman) -- Para o location funcionar no angular, no cap.8 aula 95 é ensinado como expor o location
+      },
+      error => {
+        if (error.status == 403) {
+          this.navCtrl.setRoot('HomePage');
+        }
+      });
+  }
+
+  /**
+   * Metodo para voltar a pagina de carrinho
+   */
+  back() {
+    this.navCtrl.setRoot('CartPage');
+  }
 }

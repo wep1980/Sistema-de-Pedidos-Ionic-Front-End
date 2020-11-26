@@ -1,14 +1,14 @@
 webpackJsonp([6],{
 
-/***/ 685:
+/***/ 688:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OrderConfirmationPageModule", function() { return OrderConfirmationPageModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PaymentPageModule", function() { return PaymentPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(87);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__order_confirmation__ = __webpack_require__(697);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__payment__ = __webpack_require__(701);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -18,35 +18,34 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var OrderConfirmationPageModule = /** @class */ (function () {
-    function OrderConfirmationPageModule() {
+var PaymentPageModule = /** @class */ (function () {
+    function PaymentPageModule() {
     }
-    OrderConfirmationPageModule = __decorate([
+    PaymentPageModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__order_confirmation__["a" /* OrderConfirmationPage */],
+                __WEBPACK_IMPORTED_MODULE_2__payment__["a" /* PaymentPage */],
             ],
             imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__order_confirmation__["a" /* OrderConfirmationPage */]),
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__payment__["a" /* PaymentPage */]),
             ],
         })
-    ], OrderConfirmationPageModule);
-    return OrderConfirmationPageModule;
+    ], PaymentPageModule);
+    return PaymentPageModule;
 }());
 
-//# sourceMappingURL=order-confirmation.module.js.map
+//# sourceMappingURL=payment.module.js.map
 
 /***/ }),
 
-/***/ 697:
+/***/ 701:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return OrderConfirmationPage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PaymentPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(87);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_domain_cliente_service__ = __webpack_require__(350);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_domain_cart_service__ = __webpack_require__(152);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_forms__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(87);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -56,57 +55,43 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+// Controlador da pagina de escolha de pagamentos
 
 
 
-
-var OrderConfirmationPage = /** @class */ (function () {
-    function OrderConfirmationPage(navCtrl, navParams, clienteService, cartService) {
+var PaymentPage = /** @class */ (function () {
+    function PaymentPage(navCtrl, navParams, formBuilder) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
-        this.clienteService = clienteService;
-        this.cartService = cartService;
-        // Carregando o pedido no construtor - Passa o pedido como parametro de uma pagina para outra  
-        this.pedido = this.navParams.get('pedido');
-    }
-    OrderConfirmationPage.prototype.ionViewDidLoad = function () {
-        var _this = this;
-        this.cartItems = this.cartService.getCart().items; // Carrega os itens do carrinho
-        this.clienteService.findById(this.pedido.cliente.id) // Busca o id do cliente que esta no objeto pedido
-            .subscribe(function (response) {
-            _this.cliente = response;
-            // No objeto de pedido tem somente o id, para pegar os dados e chamada a funcao que busca os endereços atraves do id do endereço de entrega na lista dos endereços do cliente
-            _this.endereco = _this.findEndereco(_this.pedido.enderecoDeEntrega.id, response['enderecos']);
-        }, function (error) {
-            _this.navCtrl.setRoot('HomePage'); // se acontecer algum erro e redirecionado para pagina inicial
+        this.formBuilder = formBuilder;
+        this.parcelas = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; // Ao selecionar o numero de parcelas, sera armazenado aqui 
+        this.pedido = this.navParams.get('pedido'); // Pega o objeto pedido que vem de outra pagina
+        // console.log(this.pedido);
+        // foi feito tambem na pagina de signup
+        this.formGroup = this.formBuilder.group({
+            numeroDeParcelas: [1, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["f" /* Validators */].required],
+            // pagamentoComCartao -> igual esta no backend
+            "@type": ["pagamentoComCartao", __WEBPACK_IMPORTED_MODULE_1__angular_forms__["f" /* Validators */].required]
         });
+    }
+    PaymentPage.prototype.nextPage = function () {
+        this.pedido.pagamento = this.formGroup.value; // Pegando a forma de pagamento do formulario
+        //console.log(this.pedido);
+        // setRoot()-> É utilizado pq essa mesma pagina sera utilizada para mostrar(SEU PEDIDO FOI REGISTRADO, CODIDO TAL) então se tiver a seta para voltar vai ficar inconsistente pq o pedido ja vai ter sido registrado
+        this.navCtrl.setRoot('OrderConfirmationPage', { pedido: this.pedido });
     };
-    /**
-     * Função que procura os endereços
-     * @param id
-     * @param list
-     */
-    OrderConfirmationPage.prototype.findEndereco = function (id, list) {
-        var position = list.findIndex(function (x) { return x.id == id; }); // Encontra a posição do objeto x tal que x.id seja igual ao id passado por parametro
-        return list[position];
-    };
-    // Mostra o valor total do pedido
-    OrderConfirmationPage.prototype.total = function () {
-        return this.cartService.total();
-    };
-    OrderConfirmationPage = __decorate([
+    PaymentPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-            selector: 'page-order-confirmation',template:/*ion-inline-start:"C:\workspace ionic\ionic-spring-frontend\src\pages\order-confirmation\order-confirmation.html"*/'<!--Tela de confirmação de pedido-->\n<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Confira seu pedido</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n\n  <ion-card>\n    <ion-card-header>\n      Itens do pedido\n    </ion-card-header>\n\n    <ion-list>\n      <ion-item *ngFor="let item of cartItems">\n        <ion-thumbnail item-start>\n          <img [src]="item.produto.imageUrl || \'assets/imgs/prod.jpg\'">\n        </ion-thumbnail>\n        <h2>{{item.produto.nome}}</h2>\n        <p>{{item.produto.preco | currency}}</p>\n        <p class="nolinebreak">{{item.quantidade}}</p>\n        <p item-end>{{item.produto.preco * item.quantidade | currency}}</p>\n      </ion-item> \n\n      <ion-item>\n        <h2>Total</h2>\n        <h2 item-end>{{total() | currency}}</h2>\n      </ion-item>\n    </ion-list> \n  </ion-card>\n\n  <ion-card>\n      <ion-card-header>\n        Cliente\n      </ion-card-header>\n      <ion-item>\n        <h2>{{cliente?.nome}}</h2>\n        <p>{{cliente?.email}}</p>\n      </ion-item>\n  </ion-card>\n\n  <ion-card>\n    <ion-card-header>\n      Endereço de entrega\n    </ion-card-header>\n\n    <ion-item>\n      <h2>{{endereco?.logradouro}}, {{endereco?.numero}}</h2>\n      <p>{{endereco?.complemento}} {{endereco?.bairro}} CEP {{endereco?.cep}}</p>\n      <p>{{endereco?.cidade.nome}}, {{endereco?.cidade.estado.nome}}</p>\n    </ion-item>\n  </ion-card>\n\n  <ion-card>\n    <ion-card-header>\n      Pagamento\n    </ion-card-header>\n\n    <ion-item *ngIf="pedido.pagamento[\'@type\']==\'pagamentoComCartao\'">\n      <h3>Pagamento com cartão</h3>\n      <p>Parcelas: {{pedido.pagamento.numeroDeParcelas}}</p>\n    </ion-item>\n    <ion-item *ngIf="pedido.pagamento[\'@type\']==\'pagamentoComBoleto\'">\n      <h3>Pagamento com boleto</h3>\n    </ion-item>\n  </ion-card>\n</ion-content>\n'/*ion-inline-end:"C:\workspace ionic\ionic-spring-frontend\src\pages\order-confirmation\order-confirmation.html"*/,
+            selector: 'page-payment',template:/*ion-inline-start:"C:\workspace ionic\ionic-spring-frontend\src\pages\payment\payment.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Forma de pagamento</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n\n  <form [formGroup]="formGroup" (ngSubmit)="nextPage(); $event.preventDefault()">\n    <ion-list radio-group formControlName="@type">\n      <ion-list-header>\n        Tipo de pagamento\n      </ion-list-header>\n      <ion-item>\n        <ion-label>Pagamento com cartão</ion-label>\n        <ion-radio checked="true" value="pagamentoComCartao"></ion-radio>\n      </ion-item>\n      <ion-item>\n        <ion-label>Pagamento com boleto</ion-label>\n        <ion-radio value="pagamentoComBoleto"></ion-radio>\n      </ion-item>\n    </ion-list>\n\n    <ion-item *ngIf="formGroup.value[\'@type\'] == \'pagamentoComCartao\'">\n      <ion-label stacked>Parcelas no boleto</ion-label>\n      <ion-select formControlName="numeroDeParcelas">\n        <ion-option *ngFor="let n of parcelas; first as f" [value]="n" [selected]="f">{{n}}</ion-option>\n      </ion-select>\n    </ion-item>\n    <button ion-button block type="submit" [disabled]="formGroup.invalid">Próximo</button>\n  </form>\n</ion-content>'/*ion-inline-end:"C:\workspace ionic\ionic-spring-frontend\src\pages\payment\payment.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */],
-            __WEBPACK_IMPORTED_MODULE_2__services_domain_cliente_service__["a" /* ClienteService */],
-            __WEBPACK_IMPORTED_MODULE_3__services_domain_cart_service__["a" /* CartService */]])
-    ], OrderConfirmationPage);
-    return OrderConfirmationPage;
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["h" /* NavController */],
+            __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["i" /* NavParams */],
+            __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormBuilder */]])
+    ], PaymentPage);
+    return PaymentPage;
 }());
 
-//# sourceMappingURL=order-confirmation.js.map
+//# sourceMappingURL=payment.js.map
 
 /***/ })
 

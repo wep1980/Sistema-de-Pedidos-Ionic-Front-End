@@ -1,14 +1,14 @@
 webpackJsonp([3],{
 
-/***/ 689:
+/***/ 690:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ProdutoDetailPageModule", function() { return ProdutoDetailPageModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ProdutosPageModule", function() { return ProdutosPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(87);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__produto_detail__ = __webpack_require__(701);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__produtos__ = __webpack_require__(703);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -18,36 +18,35 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var ProdutoDetailPageModule = /** @class */ (function () {
-    function ProdutoDetailPageModule() {
+var ProdutosPageModule = /** @class */ (function () {
+    function ProdutosPageModule() {
     }
-    ProdutoDetailPageModule = __decorate([
+    ProdutosPageModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__produto_detail__["a" /* ProdutoDetailPage */],
+                __WEBPACK_IMPORTED_MODULE_2__produtos__["a" /* ProdutosPage */],
             ],
             imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__produto_detail__["a" /* ProdutoDetailPage */]),
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__produtos__["a" /* ProdutosPage */]),
             ],
         })
-    ], ProdutoDetailPageModule);
-    return ProdutoDetailPageModule;
+    ], ProdutosPageModule);
+    return ProdutosPageModule;
 }());
 
-//# sourceMappingURL=produto-detail.module.js.map
+//# sourceMappingURL=produtos.module.js.map
 
 /***/ }),
 
-/***/ 701:
+/***/ 703:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProdutoDetailPage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProdutosPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(87);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__config_api_config__ = __webpack_require__(45);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_domain_cart_service__ = __webpack_require__(152);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_domain_produto_service__ = __webpack_require__(351);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_domain_produto_service__ = __webpack_require__(351);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -61,54 +60,57 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-
-var ProdutoDetailPage = /** @class */ (function () {
-    function ProdutoDetailPage(navCtrl, navParams, produtoService, cartService) {
+var ProdutosPage = /** @class */ (function () {
+    function ProdutosPage(navCtrl, navParams, produtoService) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.produtoService = produtoService;
-        this.cartService = cartService;
     }
-    // Dados mocado
-    ProdutoDetailPage.prototype.ionViewDidLoad = function () {
+    // Dados estaticos para testar a pagina
+    ProdutosPage.prototype.ionViewDidLoad = function () {
         var _this = this;
-        var produto_id = this.navParams.get('produto_id');
-        this.produtoService.findById(produto_id).subscribe(function (response) {
-            _this.item = response;
-            _this.getImageUrlIfExists();
+        var categoria_id = this.navParams.get('categoria_id');
+        // Capturando o dado que foi passado na navegação = categorias.ts showProdutos()
+        // A resposta que vem do backend e um endpoint paginado, entao vira uma resposta diferente. -- ['content'] e o atributo que vem que carrega as categorias. TESTAR NO POSTMAN URL http://localhost:8080/produtos?categorias=2
+        this.produtoService.findByCategoria(categoria_id).subscribe(function (response) {
+            _this.items = response['content'];
+            _this.loadImageUrls();
         }, function (error) { });
     };
     /**
-     * Metodo que pega a URL da imagem se ela existir
+     *
      */
-    ProdutoDetailPage.prototype.getImageUrlIfExists = function () {
-        var _this = this;
-        this.produtoService.getImageFromBucket(this.item.id)
-            .subscribe(function (response) {
-            _this.item.imageUrl = __WEBPACK_IMPORTED_MODULE_2__config_api_config__["a" /* API_CONFIG */].bucketBaseUrl + "/prod" + _this.item.id + ".jpg";
-        }, function (error) { });
+    ProdutosPage.prototype.loadImageUrls = function () {
+        var _loop_1 = function () {
+            var item = this_1.items[i];
+            this_1.produtoService.getSmallImageFromBucket(item.id)
+                .subscribe(function (response) {
+                item.imageUrl = __WEBPACK_IMPORTED_MODULE_2__config_api_config__["a" /* API_CONFIG */].bucketBaseUrl + "/prod" + item.id + "-small.jpg";
+            }, function (error) { });
+        };
+        var this_1 = this;
+        for (var i = 0; i < this.items.length; i++) {
+            _loop_1();
+        }
     };
     /**
-     * metodo que adiciona o produto no carrinho
-     * @param produto
+     * Metodo que exibe os detalhes dos produtos
      */
-    ProdutoDetailPage.prototype.addToCart = function (produto) {
-        this.cartService.addProduto(produto);
-        this.navCtrl.setRoot('CartPage');
+    ProdutosPage.prototype.showDatail = function (produto_id) {
+        this.navCtrl.push('ProdutoDetailPage', { produto_id: produto_id });
     };
-    ProdutoDetailPage = __decorate([
+    ProdutosPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-            selector: 'page-produto-detail',template:/*ion-inline-start:"C:\workspace ionic\ionic-spring-frontend\src\pages\produto-detail\produto-detail.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n        <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>ProdutoDetail</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n\n  <!--Botão flutante do carrinho de compras. navPush="CartPage"-> Navega para a pagina de carrinho -->\n  <ion-fab top right edge>\n    <button navPush="CartPage" ion-fab mini><ion-icon name="cart"></ion-icon></button>\n  </ion-fab>\n  \n  <ion-card>\n    <img [src]="item?.imageUrl || \'assets/imgs/prod.jpg\'"/>\n    <ion-card-content>\n      <ion-card-title>\n        {{item?.nome}}\n        </ion-card-title>\n      <p>\n        {{item?.preco | currency}}\n      </p>\n    </ion-card-content>\n  </ion-card>\n\n  <button ion-button block outline (click)="addToCart(item)">Adicionar ao carrinho</button>\n</ion-content>\n'/*ion-inline-end:"C:\workspace ionic\ionic-spring-frontend\src\pages\produto-detail\produto-detail.html"*/,
+            selector: 'page-produtos',template:/*ion-inline-start:"C:\workspace ionic\ionic-spring-frontend\src\pages\produtos\produtos.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Produtos</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n\n  <!--Botão flutante do carrinho de compras. navPush="CartPage"-> Navega para a pagina de carrinho -->\n  <ion-fab top right edge>\n    <button navPush="CartPage" ion-fab mini><ion-icon name="cart"></ion-icon></button>\n  </ion-fab>\n  \n  <ion-list>\n    <button ion-item *ngFor="let item of items" (click)="showDatail(item.id)">\n      <ion-thumbnail item-start>\n        <!--assets/imgs/prod.jpg -> Imagem padrão, quando o produto não tem foto-->\n        <img [src]="item.imageUrl || \'assets/imgs/prod.jpg\'">\n      </ion-thumbnail>\n      <h2>{{item.nome}}</h2>\n      <!--currency -> é um pipe para formatar o número ao estile de moeda-->\n      <p>{{item.preco | currency}}</p>\n    </button>\n  </ion-list>\n</ion-content>\n'/*ion-inline-end:"C:\workspace ionic\ionic-spring-frontend\src\pages\produtos\produtos.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */],
-            __WEBPACK_IMPORTED_MODULE_4__services_domain_produto_service__["a" /* ProdutoService */],
-            __WEBPACK_IMPORTED_MODULE_3__services_domain_cart_service__["a" /* CartService */]])
-    ], ProdutoDetailPage);
-    return ProdutoDetailPage;
+            __WEBPACK_IMPORTED_MODULE_3__services_domain_produto_service__["a" /* ProdutoService */]])
+    ], ProdutosPage);
+    return ProdutosPage;
 }());
 
-//# sourceMappingURL=produto-detail.js.map
+//# sourceMappingURL=produtos.js.map
 
 /***/ })
 

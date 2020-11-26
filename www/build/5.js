@@ -1,14 +1,14 @@
 webpackJsonp([5],{
 
-/***/ 687:
+/***/ 686:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PaymentPageModule", function() { return PaymentPageModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PickAddressPageModule", function() { return PickAddressPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(87);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__payment__ = __webpack_require__(699);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pick_address__ = __webpack_require__(699);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -18,23 +18,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var PaymentPageModule = /** @class */ (function () {
-    function PaymentPageModule() {
+var PickAddressPageModule = /** @class */ (function () {
+    function PickAddressPageModule() {
     }
-    PaymentPageModule = __decorate([
+    PickAddressPageModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__payment__["a" /* PaymentPage */],
+                __WEBPACK_IMPORTED_MODULE_2__pick_address__["a" /* PickAddressPage */],
             ],
             imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__payment__["a" /* PaymentPage */]),
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__pick_address__["a" /* PickAddressPage */]),
             ],
         })
-    ], PaymentPageModule);
-    return PaymentPageModule;
+    ], PickAddressPageModule);
+    return PickAddressPageModule;
 }());
 
-//# sourceMappingURL=payment.module.js.map
+//# sourceMappingURL=pick-address.module.js.map
 
 /***/ }),
 
@@ -42,10 +42,12 @@ var PaymentPageModule = /** @class */ (function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PaymentPage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PickAddressPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_forms__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(87);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(87);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_domain_cart_service__ = __webpack_require__(152);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_domain_cliente_service__ = __webpack_require__(350);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_storage_service__ = __webpack_require__(43);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -55,43 +57,93 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-// Controlador da pagina de escolha de pagamentos
+// Controlador da pagina de endereços do cliente, armazena os dados do pedido
 
 
 
-var PaymentPage = /** @class */ (function () {
-    function PaymentPage(navCtrl, navParams, formBuilder) {
+
+
+var PickAddressPage = /** @class */ (function () {
+    function PickAddressPage(navCtrl, navParams, storage, clienteService, cartService) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
-        this.formBuilder = formBuilder;
-        this.parcelas = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; // Ao selecionar o numero de parcelas, sera armazenado aqui 
-        this.pedido = this.navParams.get('pedido'); // Pega o objeto pedido que vem de outra pagina
-        // console.log(this.pedido);
-        // foi feito tambem na pagina de signup
-        this.formGroup = this.formBuilder.group({
-            numeroDeParcelas: [1, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["f" /* Validators */].required],
-            // pagamentoComCartao -> igual esta no backend
-            "@type": ["pagamentoComCartao", __WEBPACK_IMPORTED_MODULE_1__angular_forms__["f" /* Validators */].required]
-        });
+        this.storage = storage;
+        this.clienteService = clienteService;
+        this.cartService = cartService;
     }
-    PaymentPage.prototype.nextPage = function () {
-        this.pedido.pagamento = this.formGroup.value; // Pegando a forma de pagamento do formulario
-        //console.log(this.pedido);
-        // setRoot()-> É utilizado pq essa mesma pagina sera utilizada para mostrar(SEU PEDIDO FOI REGISTRADO, CODIDO TAL) então se tiver a seta para voltar vai ficar inconsistente pq o pedido ja vai ter sido registrado
-        this.navCtrl.setRoot('OrderConfirmationPage', { pedido: this.pedido });
+    PickAddressPage.prototype.ionViewDidLoad = function () {
+        var _this = this;
+        var localUser = this.storage.getLocalUser(); // pega o usario que esta logado no localStorage
+        if (localUser && localUser.email) {
+            this.clienteService.findByEmail(localUser.email) // Faz a busca por email
+                .subscribe(function (response) {
+                _this.items = response['enderecos']; // E pega os endereços do cliente. Esta entre ['enderecos'] pq assim fica livre de erro do compilador e essa resposta que vem do backend
+                var cart = _this.cartService.getCart(); // Variavel que recebe o carrinho
+                /**
+                 * Estrutura que precisa ser montada para armazenar os dados de um pedido
+       * {
+      "cliente" : {"id" : 1},           // PARTE 1
+      "enderecoDeEntrega" : {"id" : 1},
+      "pagamento" : {
+      "numeroDeParcelas" : 10,
+      "@type": "pagamentoComCartao"
+      },
+      "itens" : [
+      {
+      "quantidade" : 2,       // PARTE 4
+      "produto" : {"id" : 3}  // PARTE 4
+      },
+      {
+      "quantidade" : 1,       // PARTE 4
+      "produto" : {"id" : 1}  // PARTE 4
+      }
+      ]
+      }
+      */
+                _this.pedido = {
+                    cliente: { id: response['id'] },
+                    enderecoDeEntrega: null,
+                    pagamento: null,
+                    /**
+                     * Os itens do pedido são os itens do carrinho que precisam ser transformados em outro formato.
+                     * Percorre a lista de itens do carrinho convertendo cada objeto para o novo objeto do tipo item pedido - PARTE 4
+                     *
+                     */
+                    itens: cart.items.map(function (x) { return { quantidade: x.quantidade, produto: { id: x.produto.id } }; }) // PARTE 4
+                };
+            }, function (error) {
+                if (error.status == 403) {
+                    _this.navCtrl.setRoot('HomePage');
+                }
+            });
+        }
+        else {
+            this.navCtrl.setRoot('HomePage');
+        }
     };
-    PaymentPage = __decorate([
+    /**
+     * Metodo que redireciona a pagina depois de ter selecionado o endereço passando como parametro o objeto pedido
+     * @param item
+     */
+    PickAddressPage.prototype.nextPage = function (item) {
+        this.pedido.enderecoDeEntrega = { id: item.id };
+        //console.log(this.pedido);
+        this.navCtrl.push('PaymentPage', { pedido: this.pedido });
+    };
+    PickAddressPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-            selector: 'page-payment',template:/*ion-inline-start:"C:\workspace ionic\ionic-spring-frontend\src\pages\payment\payment.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Forma de pagamento</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n\n  <form [formGroup]="formGroup" (ngSubmit)="nextPage(); $event.preventDefault()">\n    <ion-list radio-group formControlName="@type">\n      <ion-list-header>\n        Tipo de pagamento\n      </ion-list-header>\n      <ion-item>\n        <ion-label>Pagamento com cartão</ion-label>\n        <ion-radio checked="true" value="pagamentoComCartao"></ion-radio>\n      </ion-item>\n      <ion-item>\n        <ion-label>Pagamento com boleto</ion-label>\n        <ion-radio value="pagamentoComBoleto"></ion-radio>\n      </ion-item>\n    </ion-list>\n\n    <ion-item *ngIf="formGroup.value[\'@type\'] == \'pagamentoComCartao\'">\n      <ion-label stacked>Parcelas no boleto</ion-label>\n      <ion-select formControlName="numeroDeParcelas">\n        <ion-option *ngFor="let n of parcelas; first as f" [value]="n" [selected]="f">{{n}}</ion-option>\n      </ion-select>\n    </ion-item>\n    <button ion-button block type="submit" [disabled]="formGroup.invalid">Próximo</button>\n  </form>\n</ion-content>'/*ion-inline-end:"C:\workspace ionic\ionic-spring-frontend\src\pages\payment\payment.html"*/,
+            selector: 'page-pick-address',template:/*ion-inline-start:"C:\workspace ionic\ionic-spring-frontend\src\pages\pick-address\pick-address.html"*/'<!--Pagina de endereços do Cliente-->\n<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Fechamento de pedido</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n    <ion-list>\n        <ion-list-header>\n          Selecione um endereço\n        </ion-list-header>\n        <!--(click)="nextPage(item)"-> Passa o endereço clicado como argumento -->\n        <button ion-item *ngFor="let item of items" (click)="nextPage(item)">\n            <h2>{{item.logradouro}}, {{item.numero}}</h2>\n            <p>{{item.complemento}} {{item.bairro}} CEP {{item.cep}}</p>\n            <p>{{item.cidade.nome}}, {{item.cidade.estado.nome}}</p>\n        </button>\n      </ion-list>\n</ion-content>'/*ion-inline-end:"C:\workspace ionic\ionic-spring-frontend\src\pages\pick-address\pick-address.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["h" /* NavController */],
-            __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["i" /* NavParams */],
-            __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormBuilder */]])
-    ], PaymentPage);
-    return PaymentPage;
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */],
+            __WEBPACK_IMPORTED_MODULE_4__services_storage_service__["a" /* StorageService */],
+            __WEBPACK_IMPORTED_MODULE_3__services_domain_cliente_service__["a" /* ClienteService */],
+            __WEBPACK_IMPORTED_MODULE_2__services_domain_cart_service__["a" /* CartService */]])
+    ], PickAddressPage);
+    return PickAddressPage;
 }());
 
-//# sourceMappingURL=payment.js.map
+//# sourceMappingURL=pick-address.js.map
 
 /***/ })
 
