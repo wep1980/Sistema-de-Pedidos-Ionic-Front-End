@@ -273,7 +273,7 @@ var map = {
 		4
 	],
 	"../pages/produtos/produtos.module": [
-		691,
+		692,
 		3
 	],
 	"../pages/profile/profile.module": [
@@ -281,7 +281,7 @@ var map = {
 		2
 	],
 	"../pages/signup/signup.module": [
-		692,
+		691,
 		0
 	]
 };
@@ -406,8 +406,10 @@ var ProdutoService = /** @class */ (function () {
     ProdutoService.prototype.findById = function (produto_id) {
         return this.http.get(__WEBPACK_IMPORTED_MODULE_2__config_api_config__["a" /* API_CONFIG */].baseUrl + "/produtos/" + produto_id);
     };
-    ProdutoService.prototype.findByCategoria = function (categoria_id) {
-        return this.http.get(__WEBPACK_IMPORTED_MODULE_2__config_api_config__["a" /* API_CONFIG */].baseUrl + "/produtos/?categorias=" + categoria_id);
+    ProdutoService.prototype.findByCategoria = function (categoria_id, page, linesPerPage) {
+        if (page === void 0) { page = 0; }
+        if (linesPerPage === void 0) { linesPerPage = 24; }
+        return this.http.get(__WEBPACK_IMPORTED_MODULE_2__config_api_config__["a" /* API_CONFIG */].baseUrl + "/produtos/?categorias=" + categoria_id + "&page=" + page + "&linesPerPage=" + linesPerPage);
     };
     /**
      * Metodo que busca as fotos miniatura das categorias do tipo Observable<any>
@@ -573,8 +575,8 @@ var AppModule = /** @class */ (function () {
                         { loadChildren: '../pages/pick-address/pick-address.module#PickAddressPageModule', name: 'PickAddressPage', segment: 'pick-address', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/produto-detail/produto-detail.module#ProdutoDetailPageModule', name: 'ProdutoDetailPage', segment: 'produto-detail', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/profile/profile.module#ProfilePageModule', name: 'ProfilePage', segment: 'profile', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/produtos/produtos.module#ProdutosPageModule', name: 'ProdutosPage', segment: 'produtos', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/signup/signup.module#SignupPageModule', name: 'SignupPage', segment: 'signup', priority: 'low', defaultHistory: [] }
+                        { loadChildren: '../pages/signup/signup.module#SignupPageModule', name: 'SignupPage', segment: 'signup', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/produtos/produtos.module#ProdutosPageModule', name: 'ProdutosPage', segment: 'produtos', priority: 'low', defaultHistory: [] }
                     ]
                 }),
             ],

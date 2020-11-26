@@ -12,7 +12,12 @@ import { ProdutoService } from '../../services/domain/produto.service';
 })
 export class ProdutosPage {
 
-  items : ProdutoDTO[];
+  /**
+   * Iniciando a lista vazia. Sempre que for buscado uma nova pagina ela sera concatenada com uma lista que ja existe(Concatenação de listas), Na busca da primeira pag sera concatenada a lista vazia com a primeira pag, 
+   * quando for buscado a segunda pag sera concatenada a primeira pag com a segunda pag, e assim por diante
+   */
+  items : ProdutoDTO[] = []; 
+  page : number = 0;
 
   constructor(public navCtrl: NavController, 
               public navParams: NavParams,
@@ -30,10 +35,15 @@ export class ProdutosPage {
     let loader = this.presentLoading(); // Chamando o loading
     // Capturando o dado que foi passado na navegação = categorias.ts showProdutos()
     // A resposta que vem do backend e um endpoint paginado, entao vira uma resposta diferente. -- ['content'] e o atributo que vem que carrega as categorias. TESTAR NO POSTMAN URL http://localhost:8080/produtos?categorias=2
-    this.produtoService.findByCategoria(categoria_id).subscribe(response => {
-      this.items = response['content'];
+    this.produtoService.findByCategoria(categoria_id, this.page, 10).subscribe(response => { // os produtos serão paginados de 10 em 10
+      let start = this.items.length; // Pegando o tamanho da lista
+      this.items = this.items.concat( response['content']); // Concatenando a nova resposta com o que ja tinha antes
+      let end = this.items.length - 1; // Depois de concatenar salva o novo tamanho da lista
       loader.dismiss(); // fecha a janela do loading
-      this.loadImageUrls();
+      console.log(this.page); // verifica se a pagina esta correta 
+      console.log(this.items); // verifica se a lista esta correta
+
+      this.loadImageUrls(start, end);
     },
     error => {
       loader.dismiss(); // fecha a janela do loading
@@ -41,8 +51,13 @@ export class ProdutosPage {
   }
 
 
-  loadImageUrls() {
-    for (var i=0; i<this.items.length; i++) { // Percorre a lista de produtos
+  /**
+   * Metodo que carrega as imagens de acordo com o tamanho de elementos que vem por pagina
+   * @param start 
+   * @param end 
+   */
+  loadImageUrls(start : number, end : number) {
+    for (var i = start; i <= end; i++) { // Percorre a lista de produtos
       let item = this.items[i];
       this.produtoService.getSmallImageFromBucket(item.id)
         .subscribe(response => {
@@ -78,9 +93,24 @@ export class ProdutosPage {
    * @param refresher 
    */
   doRefresh(refresher) {
+    this.page = 0;
+    this.items = [];
     this.loadData(); // recarrega os dados
     setTimeout(() => {
       refresher.complete(); // depois de 1 segundo fecha o refresher que aparece no canto da tela
+    }, 1000);
+  }
+
+
+  /**
+   * Metodo que chama as as paginas de produtos atraves do infinity scroll, ao chegar no final da pagina ele carrega a proxima
+   * @param infiniteScroll 
+   */
+  doInfinite(infiniteScroll) {
+    this.page++; // Incrementa a pagina
+    this.loadData(); // carrega mais dados
+    setTimeout(() => {
+      infiniteScroll.complete();
     }, 1000);
   }
 }

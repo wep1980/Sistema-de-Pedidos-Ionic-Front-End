@@ -1,6 +1,6 @@
 webpackJsonp([3],{
 
-/***/ 691:
+/***/ 692:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8,7 +8,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ProdutosPageModule", function() { return ProdutosPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(87);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__produtos__ = __webpack_require__(704);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__produtos__ = __webpack_require__(705);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -38,7 +38,7 @@ var ProdutosPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 704:
+/***/ 705:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -66,6 +66,12 @@ var ProdutosPage = /** @class */ (function () {
         this.navParams = navParams;
         this.produtoService = produtoService;
         this.loadingCtrl = loadingCtrl;
+        /**
+         * Iniciando a lista vazia. Sempre que for buscado uma nova pagina ela sera concatenada com uma lista que ja existe(Concatenação de listas), Na busca da primeira pag sera concatenada a lista vazia com a primeira pag,
+         * quando for buscado a segunda pag sera concatenada a primeira pag com a segunda pag, e assim por diante
+         */
+        this.items = [];
+        this.page = 0;
     }
     ProdutosPage.prototype.ionViewDidLoad = function () {
         this.loadData();
@@ -76,15 +82,24 @@ var ProdutosPage = /** @class */ (function () {
         var loader = this.presentLoading(); // Chamando o loading
         // Capturando o dado que foi passado na navegação = categorias.ts showProdutos()
         // A resposta que vem do backend e um endpoint paginado, entao vira uma resposta diferente. -- ['content'] e o atributo que vem que carrega as categorias. TESTAR NO POSTMAN URL http://localhost:8080/produtos?categorias=2
-        this.produtoService.findByCategoria(categoria_id).subscribe(function (response) {
-            _this.items = response['content'];
+        this.produtoService.findByCategoria(categoria_id, this.page, 10).subscribe(function (response) {
+            var start = _this.items.length; // Pegando o tamanho da lista
+            _this.items = _this.items.concat(response['content']); // Concatenando a nova resposta com o que ja tinha antes
+            var end = _this.items.length - 1; // Depois de concatenar salva o novo tamanho da lista
             loader.dismiss(); // fecha a janela do loading
-            _this.loadImageUrls();
+            console.log(_this.page); // verifica se a pagina esta correta 
+            console.log(_this.items); // verifica se a lista esta correta
+            _this.loadImageUrls(start, end);
         }, function (error) {
             loader.dismiss(); // fecha a janela do loading
         });
     };
-    ProdutosPage.prototype.loadImageUrls = function () {
+    /**
+     * Metodo que carrega as imagens de acordo com o tamanho de elementos que vem por pagina
+     * @param start
+     * @param end
+     */
+    ProdutosPage.prototype.loadImageUrls = function (start, end) {
         var _loop_1 = function () {
             var item = this_1.items[i];
             this_1.produtoService.getSmallImageFromBucket(item.id)
@@ -93,7 +108,7 @@ var ProdutosPage = /** @class */ (function () {
             }, function (error) { });
         };
         var this_1 = this;
-        for (var i = 0; i < this.items.length; i++) {
+        for (var i = start; i <= end; i++) {
             _loop_1();
         }
     };
@@ -118,21 +133,32 @@ var ProdutosPage = /** @class */ (function () {
      * @param refresher
      */
     ProdutosPage.prototype.doRefresh = function (refresher) {
+        this.page = 0;
+        this.items = [];
         this.loadData(); // recarrega os dados
         setTimeout(function () {
             refresher.complete(); // depois de 1 segundo fecha o refresher que aparece no canto da tela
         }, 1000);
     };
+    /**
+     * Metodo que chama as as paginas de produtos atraves do infinity scroll, ao chegar no final da pagina ele carrega a proxima
+     * @param infiniteScroll
+     */
+    ProdutosPage.prototype.doInfinite = function (infiniteScroll) {
+        this.page++; // Incrementa a pagina
+        this.loadData(); // carrega mais dados
+        setTimeout(function () {
+            infiniteScroll.complete();
+        }, 1000);
+    };
     ProdutosPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-            selector: 'page-produtos',template:/*ion-inline-start:"C:\workspace ionic\ionic-spring-frontend\src\pages\produtos\produtos.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Produtos</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n\n  <ion-refresher (ionRefresh)="doRefresh($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n\n  <!--Botão flutante do carrinho de compras. navPush="CartPage"-> Navega para a pagina de carrinho -->\n  <ion-fab top right edge>\n    <button navPush="CartPage" ion-fab mini><ion-icon name="cart"></ion-icon></button>\n  </ion-fab>\n  \n  <ion-list>\n    <button ion-item *ngFor="let item of items" (click)="showDatail(item.id)">\n      <ion-thumbnail item-start>\n        <!--assets/imgs/prod.jpg -> Imagem padrão, quando o produto não tem foto-->\n        <img [src]="item.imageUrl || \'assets/imgs/prod.jpg\'">\n      </ion-thumbnail>\n      <h2>{{item.nome}}</h2>\n      <!--currency -> é um pipe para formatar o número ao estile de moeda-->\n      <p>{{item.preco | currency}}</p>\n    </button>\n  </ion-list>\n</ion-content>\n'/*ion-inline-end:"C:\workspace ionic\ionic-spring-frontend\src\pages\produtos\produtos.html"*/,
+            selector: 'page-produtos',template:/*ion-inline-start:"C:\workspace ionic\ionic-spring-frontend\src\pages\produtos\produtos.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Produtos</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n\n  <ion-refresher (ionRefresh)="doRefresh($event)">\n    <ion-refresher-content></ion-refresher-content>\n  </ion-refresher>\n\n  <!--Botão flutante do carrinho de compras. navPush="CartPage"-> Navega para a pagina de carrinho -->\n  <ion-fab top right edge>\n    <button navPush="CartPage" ion-fab mini><ion-icon name="cart"></ion-icon></button>\n  </ion-fab>\n  \n  <ion-list>\n    <button ion-item *ngFor="let item of items" (click)="showDatail(item.id)">\n      <ion-thumbnail item-start>\n        <!--assets/imgs/prod.jpg -> Imagem padrão, quando o produto não tem foto-->\n        <img [src]="item.imageUrl || \'assets/imgs/prod.jpg\'">\n      </ion-thumbnail>\n      <h2>{{item.nome}}</h2>\n      <!--currency -> é um pipe para formatar o número ao estile de moeda-->\n      <p>{{item.preco | currency}}</p>\n    </button>\n  </ion-list>\n\n  <ion-infinite-scroll (ionInfinite)="doInfinite($event)"> <!--Elemento do infinity scroll, que carrega todos os produtos da pagina -->\n    <ion-infinite-scroll-content></ion-infinite-scroll-content>\n  </ion-infinite-scroll>  \n\n</ion-content>\n'/*ion-inline-end:"C:\workspace ionic\ionic-spring-frontend\src\pages\produtos\produtos.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavParams */],
-            __WEBPACK_IMPORTED_MODULE_3__services_domain_produto_service__["a" /* ProdutoService */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__services_domain_produto_service__["a" /* ProdutoService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__services_domain_produto_service__["a" /* ProdutoService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */]) === "function" && _d || Object])
     ], ProdutosPage);
     return ProdutosPage;
+    var _a, _b, _c, _d;
 }());
 
 //# sourceMappingURL=produtos.js.map
