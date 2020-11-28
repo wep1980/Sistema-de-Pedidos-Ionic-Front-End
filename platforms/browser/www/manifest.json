@@ -1,13 +1,11 @@
 {
-  "name": "Ionic",
-  "short_name": "Ionic",
-  "start_url": "index.html",
+  "background_color": "#FFF",
   "display": "standalone",
-  "icons": [{
-    "src": "assets/imgs/logo.png",
-    "sizes": "512x512",
-    "type": "image/png"
-  }],
-  "background_color": "#4e8ef7",
-  "theme_color": "#4e8ef7"
+  "name": "Sistema de Pedidos",
+  "short_name": "Sistema de Pedidos",
+  "version": "com.waldirep.ionicspringmc",
+  "description": "Estudo de caso sobre Spring Boot e Ionic",
+  "author": "Waldir Escouto Pereira",
+  "icons": [],
+  "start_url": "index.html"
 }

@@ -1,6 +1,6 @@
 {
-  "name": "ionic-spring-frontend",
-  "short_name": "ionic-spring-frontend",
+  "name": "Sistema de Pedidos",
+  "short_name": "Sistema de Pedidos",
   "description": "Description of your app from template",
   "start_url": "index.html",
   "scope": "index.html",
