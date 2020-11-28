@@ -88,6 +88,28 @@ export class ProfilePage {
     });
   }
 
+  /**
+   * Metodo que pega uma foto da galeria do celular
+   */
+  getGalleryPicture() {
+
+    this.cameraOn = true; // Usando a camera(ON)
+
+    const options: CameraOptions = {
+      quality: 100, // Qualidade maxima
+      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.PNG,
+      mediaType: this.camera.MediaType.PICTURE
+    }
+
+    this.camera.getPicture(options).then((imageData) => {
+     this.picture = 'data:image/png;base64,' + imageData;
+     this.cameraOn = false; // desliga a camera (OFF)
+    }, (err) => {
+    });
+  }
+
 
   sendPicture() {
     this.clienteService.uploadPicture(this.picture) // Envia a imagem

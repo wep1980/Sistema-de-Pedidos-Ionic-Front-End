@@ -351,6 +351,25 @@ var ProfilePage = /** @class */ (function () {
         }, function (err) {
         });
     };
+    /**
+     * Metodo que pega uma foto da galeria do celular
+     */
+    ProfilePage.prototype.getGalleryPicture = function () {
+        var _this = this;
+        this.cameraOn = true; // Usando a camera(ON)
+        var options = {
+            quality: 100,
+            sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+            destinationType: this.camera.DestinationType.DATA_URL,
+            encodingType: this.camera.EncodingType.PNG,
+            mediaType: this.camera.MediaType.PICTURE
+        };
+        this.camera.getPicture(options).then(function (imageData) {
+            _this.picture = 'data:image/png;base64,' + imageData;
+            _this.cameraOn = false; // desliga a camera (OFF)
+        }, function (err) {
+        });
+    };
     ProfilePage.prototype.sendPicture = function () {
         var _this = this;
         this.clienteService.uploadPicture(this.picture) // Envia a imagem
@@ -368,7 +387,7 @@ var ProfilePage = /** @class */ (function () {
     };
     ProfilePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-            selector: 'page-profile',template:/*ion-inline-start:"C:\workspace ionic\ionic-spring-frontend\src\pages\profile\profile.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle> <!--Colocando o menu na pagina de profile -->\n      <ion-icon name="menu"></ion-icon>\n   </button>\n    <ion-title>Profile</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n   <ion-avatar>\n     <!--[src]= Binding de dados, se não exister a imagem do cliente a imagem padrão sera colocada-->\n     <!--cliente? -> Operador de navegação segura do angular, se a variavel nao vale nada, não ocorrera erros na pagina -->\n     <img class="circle" [src]="cliente?.imageUrl || \'assets/imgs/avatar-blank.png\' ">\n   </ion-avatar>\n   <h2 text-center>{{cliente?.nome}}</h2>\n   <p text-center>{{cliente?.email}}</p>\n\n   <ion-card> <!--Caixinha para pegar a foto do usuario-->\n    <ion-card-header>\n      Enviar imagem de perfil\n    </ion-card-header>\n    <ion-item *ngIf="picture"> <!--So sera mostrado se o objeto picture estiver preenchido-->\n      <img [src]="picture">\n    </ion-item>\n    <ion-item>\n      <!--[disabled]="cameraOn" -> O botão fica desabilitado quando a camera estiver ligada-->\n      <button ion-button block (click)="getCameraPicture()" [disabled]="cameraOn">Camera</button>\n\n      <button *ngIf="picture" ion-button outline block (click)="sendPicture()">Enviar imagem</button> <!--Esse botão so ira aparecer se tiver uma imagem carregada-->\n      <button *ngIf="picture" ion-button outline block (click)="cancel()">Descartar imagem</button> <!--Esse botão so ira aparecer se tiver uma imagem carregada-->\n    </ion-item>\n  </ion-card>  \n</ion-content>\n'/*ion-inline-end:"C:\workspace ionic\ionic-spring-frontend\src\pages\profile\profile.html"*/,
+            selector: 'page-profile',template:/*ion-inline-start:"C:\workspace ionic\ionic-spring-frontend\src\pages\profile\profile.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle> <!--Colocando o menu na pagina de profile -->\n      <ion-icon name="menu"></ion-icon>\n   </button>\n    <ion-title>Profile</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n   <ion-avatar>\n     <!--[src]= Binding de dados, se não exister a imagem do cliente a imagem padrão sera colocada-->\n     <!--cliente? -> Operador de navegação segura do angular, se a variavel nao vale nada, não ocorrera erros na pagina -->\n     <img class="circle" [src]="cliente?.imageUrl || \'assets/imgs/avatar-blank.png\' ">\n   </ion-avatar>\n   <h2 text-center>{{cliente?.nome}}</h2>\n   <p text-center>{{cliente?.email}}</p>\n\n   <ion-card> <!--Caixinha para pegar a foto do usuario-->\n    <ion-card-header>\n      Enviar imagem de perfil\n    </ion-card-header>\n    <ion-item *ngIf="picture"> <!--So sera mostrado se o objeto picture estiver preenchido-->\n      <img [src]="picture">\n    </ion-item>\n    <ion-item>\n      <!--[disabled]="cameraOn" -> O botão fica desabilitado quando a camera estiver ligada-->\n      <button ion-button block (click)="getCameraPicture()" [disabled]="cameraOn">Camera</button>\n\n      <button ion-button block (click)="getGalleryPicture()" [disabled]="cameraOn">Galeria</button>\n\n      <button *ngIf="picture" ion-button outline block (click)="sendPicture()">Enviar imagem</button> <!--Esse botão so ira aparecer se tiver uma imagem carregada-->\n      <button *ngIf="picture" ion-button outline block (click)="cancel()">Descartar imagem</button> <!--Esse botão so ira aparecer se tiver uma imagem carregada-->\n    </ion-item>\n  </ion-card>  \n</ion-content>\n'/*ion-inline-end:"C:\workspace ionic\ionic-spring-frontend\src\pages\profile\profile.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["i" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["j" /* NavParams */],
