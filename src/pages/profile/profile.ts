@@ -85,6 +85,7 @@ export class ProfilePage {
      this.picture = 'data:image/png;base64,' + imageData;
      this.cameraOn = false; // desliga a camera (OFF)
     }, (err) => {
+      this.cameraOn = false;
     });
   }
 
@@ -107,6 +108,7 @@ export class ProfilePage {
      this.picture = 'data:image/png;base64,' + imageData;
      this.cameraOn = false; // desliga a camera (OFF)
     }, (err) => {
+      this.cameraOn = false;
     });
   }
 
