@@ -75,9 +75,10 @@ export class ProfilePage {
     this.cameraOn = true; // Usando a camera(ON)
 
     const options: CameraOptions = {
+      correctOrientation: true,
       quality: 100, // Qualidade maxima
       destinationType: this.camera.DestinationType.DATA_URL,
-      encodingType: this.camera.EncodingType.PNG,
+      encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE
     }
 
@@ -98,6 +99,7 @@ export class ProfilePage {
 
     const options: CameraOptions = {
       quality: 100, // Qualidade maxima
+      correctOrientation: true,
       sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
       destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.PNG,
